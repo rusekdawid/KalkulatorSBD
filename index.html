@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalkulator Trójboju Siłowego</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --surface2: #1a1a24;
+    --border: #2a2a3a;
+    --accent: #e63946;
+    --accent-glow: rgba(230, 57, 70, 0.3);
+    --gold: #f4a261;
+    --text: #e8e8f0;
+    --text-dim: #8888a0;
+    --green: #2ecc71;
+    --input-bg: #0e0e16;
+    --blue: #4a9eff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(230, 57, 70, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(230, 57, 70, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.2rem;
+    letter-spacing: 4px;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .header h1 span { color: var(--accent); }
+
+  .header p {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+
+  .section-divider {
+    text-align: center;
+    margin: 40px 0 32px;
+    position: relative;
+  }
+
+  .section-divider::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; top: 50%;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .section-divider span {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 3px;
+    color: var(--text-dim);
+    background: var(--bg);
+    padding: 0 20px;
+    position: relative;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0.6;
+  }
+
+  .card.blue-accent::before {
+    background: linear-gradient(90deg, transparent, var(--blue), transparent);
+  }
+
+  .card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card-title .icon {
+    width: 28px;
+    height: 28px;
+    background: var(--accent);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+  }
+
+  .card-title .icon.blue { background: var(--blue); }
+
+  .toggle-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .toggle-btn {
+    flex: 1;
+    padding: 12px;
+    background: var(--input-bg);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-dim);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  .toggle-btn:hover {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+
+  .toggle-btn.active {
+    border-color: var(--accent);
+    background: rgba(230, 57, 70, 0.1);
+    color: var(--accent);
+    box-shadow: 0 0 20px var(--accent-glow);
+  }
+
+  .input-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .input-grid.three-col {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .input-group label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    font-weight: 500;
+  }
+
+  .input-group input, .input-group select {
+    background: var(--input-bg);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+  }
+
+  .input-group select {
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238888a0' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+  }
+
+  .input-group select option {
+    background: var(--surface);
+    color: var(--text);
+  }
+
+  .input-group input:focus, .input-group select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 16px var(--accent-glow);
+  }
+
+  .input-group input::placeholder {
+    color: #444460;
+    font-weight: 300;
+  }
+
+  .input-group .unit {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  .lift-row {
+    display: grid;
+    grid-template-columns: 50px 1fr 1fr 1fr 80px;
+    gap: 12px;
+    align-items: end;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .lift-row:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .lift-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    color: var(--text);
+    padding-bottom: 16px;
+  }
+
+  .e1rm-result {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    color: var(--green);
+    padding-bottom: 16px;
+    text-align: right;
+  }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-top: 8px;
+  }
+
+  .result-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 16px;
+    text-align: center;
+    transition: all 0.3s;
+  }
+
+  .result-box.highlight {
+    border-color: var(--accent);
+    box-shadow: 0 4px 24px var(--accent-glow);
+  }
+
+  .result-box.blue-highlight {
+    border-color: var(--blue);
+    box-shadow: 0 4px 24px rgba(74, 158, 255, 0.25);
+  }
+
+  .result-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .result-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .result-box.highlight .result-value { color: var(--accent); }
+  .result-box.blue-highlight .result-value { color: var(--blue); }
+  .result-value.gold { color: var(--gold); }
+  .result-value.green { color: var(--green); }
+
+  .result-unit {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    color: var(--text-dim);
+    font-size: 0.72rem;
+    letter-spacing: 1px;
+    line-height: 1.8;
+  }
+
+  @media (max-width: 560px) {
+    .header h1 { font-size: 2.4rem; }
+    .card { padding: 24px 16px; }
+    .input-grid.three-col { grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    .results-grid { grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    .result-value { font-size: 1.7rem; }
+    .input-group input, .input-group select { padding: 10px 12px; font-size: 0.95rem; }
+    .lift-row {
+      grid-template-columns: 40px 1fr 1fr 1fr 65px;
+      gap: 8px;
+    }
+    .e1rm-result { font-size: 0.85rem; }
+  }
+
+  @media (max-width: 400px) {
+    .lift-row {
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+    .lift-name {
+      grid-column: 1 / -1;
+      padding-bottom: 4px;
+    }
+    .e1rm-result {
+      grid-column: 1 / -1;
+      text-align: left;
+      padding-bottom: 0;
+      padding-top: 4px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>KALKULATOR <span>TRÓJBOJU</span></h1>
+    <p>IPF GL &bull; DOTS &bull; Estymowany Total</p>
+  </div>
+
+  <!-- DANE ZAWODNIKA (shared) -->
+  <div class="card">
+    <div class="card-title">
+      <div class="icon">👤</div>
+      DANE ZAWODNIKA
+    </div>
+
+    <div class="toggle-row">
+      <button class="toggle-btn active" onclick="setGender('M')" id="btn-m">MĘŻCZYZNA</button>
+      <button class="toggle-btn" onclick="setGender('F')" id="btn-f">KOBIETA</button>
+    </div>
+
+    <div class="input-grid">
+      <div class="input-group">
+        <label>Masa ciała</label>
+        <input type="number" id="bodyweight" placeholder="0.0" step="0.1" oninput="calculate(); calcEstimated();">
+        <span class="unit">kg</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESTYMOWANY TOTAL -->
+  <div class="card blue-accent">
+    <div class="card-title">
+      <div class="icon blue">📐</div>
+      ESTYMOWANY TOTAL (z serii treningowych)
+    </div>
+
+    <div class="lift-row">
+      <div class="lift-name">SQ</div>
+      <div class="input-group">
+        <label>Ciężar</label>
+        <input type="number" id="est-sq-wt" placeholder="kg" step="0.5" oninput="calcEstimated()">
+      </div>
+      <div class="input-group">
+        <label>Powt.</label>
+        <select id="est-sq-reps" onchange="calcEstimated()">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3" selected>3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label>RIR</label>
+        <select id="est-sq-rir" onchange="calcEstimated()">
+          <option value="0">0</option>
+          <option value="0.5">0.5</option>
+          <option value="1">1</option>
+          <option value="1.5">1.5</option>
+          <option value="2" selected>2</option>
+          <option value="2.5">2.5</option>
+          <option value="3">3</option>
+          <option value="3.5">3.5</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
+      </div>
+      <div class="e1rm-result" id="est-sq-e1rm">—</div>
+    </div>
+
+    <div class="lift-row">
+      <div class="lift-name">BP</div>
+      <div class="input-group">
+        <label>Ciężar</label>
+        <input type="number" id="est-bp-wt" placeholder="kg" step="0.5" oninput="calcEstimated()">
+      </div>
+      <div class="input-group">
+        <label>Powt.</label>
+        <select id="est-bp-reps" onchange="calcEstimated()">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3" selected>3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label>RIR</label>
+        <select id="est-bp-rir" onchange="calcEstimated()">
+          <option value="0">0</option>
+          <option value="0.5">0.5</option>
+          <option value="1">1</option>
+          <option value="1.5">1.5</option>
+          <option value="2" selected>2</option>
+          <option value="2.5">2.5</option>
+          <option value="3">3</option>
+          <option value="3.5">3.5</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
+      </div>
+      <div class="e1rm-result" id="est-bp-e1rm">—</div>
+    </div>
+
+    <div class="lift-row">
+      <div class="lift-name">DL</div>
+      <div class="input-group">
+        <label>Ciężar</label>
+        <input type="number" id="est-dl-wt" placeholder="kg" step="0.5" oninput="calcEstimated()">
+      </div>
+      <div class="input-group">
+        <label>Powt.</label>
+        <select id="est-dl-reps" onchange="calcEstimated()">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3" selected>3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label>RIR</label>
+        <select id="est-dl-rir" onchange="calcEstimated()">
+          <option value="0">0</option>
+          <option value="0.5">0.5</option>
+          <option value="1">1</option>
+          <option value="1.5">1.5</option>
+          <option value="2" selected>2</option>
+          <option value="2.5">2.5</option>
+          <option value="3">3</option>
+          <option value="3.5">3.5</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
+      </div>
+      <div class="e1rm-result" id="est-dl-e1rm">—</div>
+    </div>
+
+    <div class="results-grid" style="margin-top: 24px;">
+      <div class="result-box blue-highlight">
+        <div class="result-label">Est. Total</div>
+        <div class="result-value" id="est-total-val">—</div>
+        <div class="result-unit">kg</div>
+      </div>
+      <div class="result-box">
+        <div class="result-label">Est. IPF GL</div>
+        <div class="result-value green" id="est-ipf-val">—</div>
+        <div class="result-unit">points</div>
+      </div>
+      <div class="result-box">
+        <div class="result-label">Est. DOTS</div>
+        <div class="result-value gold" id="est-dots-val">—</div>
+        <div class="result-unit">points</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider">
+    <span>LUB WPISZ GOTOWY TOTAL</span>
+  </div>
+
+  <!-- GOTOWY TOTAL -->
+  <div class="card">
+    <div class="card-title">
+      <div class="icon">🏋️</div>
+      WYNIKI ZAWODÓW
+    </div>
+
+    <div class="input-grid three-col">
+      <div class="input-group">
+        <label>Przysiad</label>
+        <input type="number" id="squat" placeholder="0" step="0.5" oninput="calculate()">
+        <span class="unit">kg</span>
+      </div>
+      <div class="input-group">
+        <label>Ławka</label>
+        <input type="number" id="bench" placeholder="0" step="0.5" oninput="calculate()">
+        <span class="unit">kg</span>
+      </div>
+      <div class="input-group">
+        <label>Martwy ciąg</label>
+        <input type="number" id="deadlift" placeholder="0" step="0.5" oninput="calculate()">
+        <span class="unit">kg</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      <div class="icon">📊</div>
+      WYNIKI PUNKTOWE
+    </div>
+
+    <div class="results-grid">
+      <div class="result-box">
+        <div class="result-label">Total</div>
+        <div class="result-value" id="total-val">—</div>
+        <div class="result-unit">kg</div>
+      </div>
+      <div class="result-box highlight">
+        <div class="result-label">IPF GL</div>
+        <div class="result-value" id="ipf-val">—</div>
+        <div class="result-unit">points</div>
+      </div>
+      <div class="result-box">
+        <div class="result-label">DOTS</div>
+        <div class="result-value gold" id="dots-val">—</div>
+        <div class="result-unit">points</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    IPF GL (2020, oficjalne współczynniki IPF Classic) &bull; DOTS (2020)<br>
+    e1RM na podstawie tabeli RPE/RIR &bull; zaokrąglenie do 2.5 kg
+  </div>
+</div>
+
+<script>
+let gender = 'M';
+
+function setGender(g) {
+  gender = g;
+  document.getElementById('btn-m').classList.toggle('active', g === 'M');
+  document.getElementById('btn-f').classList.toggle('active', g === 'F');
+  calculate();
+  calcEstimated();
+}
+
+// ========== RPE TABLE ==========
+// rpeTable[reps][rpe] = percentage of e1RM
+// Based on the standard RPE chart (Mike Tuchscherer / RTS style)
+// RIR to RPE: RPE = 10 - RIR
+const rpeTable = {
+  1:  {10:1.000, 9.5:0.978, 9:0.955, 8.5:0.939, 8:0.922, 7.5:0.907, 7:0.892, 6.5:0.878, 6:0.863, 5.5:0.848, 5:0.834, 4.5:0.819, 4:0.805},
+  2:  {10:0.955, 9.5:0.939, 9:0.922, 8.5:0.907, 8:0.892, 7.5:0.878, 7:0.863, 6.5:0.850, 6:0.837, 5.5:0.824, 5:0.811, 4.5:0.798, 4:0.786},
+  3:  {10:0.922, 9.5:0.907, 9:0.892, 8.5:0.878, 8:0.863, 7.5:0.850, 7:0.837, 6.5:0.824, 6:0.811, 5.5:0.798, 5:0.786, 4.5:0.773, 4:0.762},
+  4:  {10:0.892, 9.5:0.878, 9:0.863, 8.5:0.850, 8:0.837, 7.5:0.824, 7:0.811, 6.5:0.799, 6:0.786, 5.5:0.774, 5:0.762, 4.5:0.750, 4:0.739},
+  5:  {10:0.863, 9.5:0.850, 9:0.837, 8.5:0.824, 8:0.811, 7.5:0.799, 7:0.786, 6.5:0.774, 6:0.762, 5.5:0.751, 5:0.739, 4.5:0.728, 4:0.717},
+  6:  {10:0.837, 9.5:0.824, 9:0.811, 8.5:0.799, 8:0.786, 7.5:0.774, 7:0.762, 6.5:0.751, 6:0.739, 5.5:0.728, 5:0.717, 4.5:0.707, 4:0.696},
+  7:  {10:0.811, 9.5:0.799, 9:0.786, 8.5:0.774, 8:0.762, 7.5:0.751, 7:0.739, 6.5:0.723, 6:0.707, 5.5:0.694, 5:0.681, 4.5:0.669, 4:0.657},
+  8:  {10:0.786, 9.5:0.774, 9:0.762, 8.5:0.751, 8:0.739, 7.5:0.723, 7:0.707, 6.5:0.694, 6:0.681, 5.5:0.669, 5:0.657, 4.5:0.645, 4:0.634},
+  9:  {10:0.762, 9.5:0.751, 9:0.739, 8.5:0.723, 8:0.707, 7.5:0.694, 7:0.681, 6.5:0.669, 6:0.657, 5.5:0.645, 5:0.634, 4.5:0.623, 4:0.613},
+  10: {10:0.739, 9.5:0.723, 9:0.707, 8.5:0.694, 8:0.681, 7.5:0.669, 7:0.657, 6.5:0.645, 6:0.634, 5.5:0.623, 5:0.613, 4.5:0.603, 4:0.593},
+  11: {10:0.707, 9.5:0.694, 9:0.681, 8.5:0.669, 8:0.657, 7.5:0.645, 7:0.634, 6.5:0.623, 6:0.613, 5.5:0.603, 5:0.593, 4.5:0.583, 4:0.574},
+  12: {10:0.681, 9.5:0.669, 9:0.657, 8.5:0.645, 8:0.634, 7.5:0.623, 7:0.613, 6.5:0.603, 6:0.593, 5.5:0.583, 5:0.574, 4.5:0.565, 4:0.556},
+};
+
+function getE1RM(weight, reps, rir) {
+  const rpe = 10 - rir;
+  if (rpe < 4 || rpe > 10) return null;
+  const row = rpeTable[reps];
+  if (!row) return null;
+  const pct = row[rpe];
+  if (!pct || pct <= 0) return null;
+  const e1rm = weight / pct;
+  return Math.round(e1rm / 2.5) * 2.5;
+}
+
+// ========== IPF GL (Classic only) ==========
+const IPF_GL = {
+  M: { A: 1199.72839, B: 1025.18162, C: 0.00921 },
+  F: { A: 610.32796,  B: 1045.59282, C: 0.03048 }
+};
+
+function calcIPFGL(bw, total) {
+  const c = IPF_GL[gender];
+  const denom = c.A - c.B * Math.exp(-c.C * bw);
+  if (denom <= 0) return 0;
+  return (100 / denom) * total;
+}
+
+// ========== DOTS ==========
+function calcDOTS(bw, total) {
+  let a, b, c, d, e;
+  if (gender === 'M') {
+    a = -307.75076; b = 24.0900756; c = -0.1918759221; d = 0.0007391293; e = -0.000001093;
+  } else {
+    a = -57.96288; b = 13.6175032; c = -0.1126655495; d = 0.0005158568; e = -0.0000010706;
+  }
+  const denom = a + b * bw + c * Math.pow(bw, 2) + d * Math.pow(bw, 3) + e * Math.pow(bw, 4);
+  if (denom <= 0) return 0;
+  return (500 / denom) * total;
+}
+
+// ========== ESTYMOWANY TOTAL ==========
+function calcEstimated() {
+  const bw = parseFloat(document.getElementById('bodyweight').value) || 0;
+  const lifts = ['sq', 'bp', 'dl'];
+  let estTotal = 0;
+
+  lifts.forEach(lift => {
+    const wt = parseFloat(document.getElementById(`est-${lift}-wt`).value) || 0;
+    const reps = parseInt(document.getElementById(`est-${lift}-reps`).value);
+    const rir = parseFloat(document.getElementById(`est-${lift}-rir`).value);
+    const el = document.getElementById(`est-${lift}-e1rm`);
+
+    if (wt > 0) {
+      const e1rm = getE1RM(wt, reps, rir);
+      if (e1rm) {
+        el.textContent = `≈ ${e1rm} kg`;
+        estTotal += e1rm;
+      } else {
+        el.textContent = '—';
+      }
+    } else {
+      el.textContent = '—';
+    }
+  });
+
+  document.getElementById('est-total-val').textContent = estTotal > 0 ? estTotal.toFixed(1) : '—';
+
+  if (bw > 0 && estTotal > 0) {
+    document.getElementById('est-ipf-val').textContent = calcIPFGL(bw, estTotal).toFixed(2);
+    document.getElementById('est-dots-val').textContent = calcDOTS(bw, estTotal).toFixed(2);
+  } else {
+    document.getElementById('est-ipf-val').textContent = '—';
+    document.getElementById('est-dots-val').textContent = '—';
+  }
+}
+
+// ========== GOTOWY TOTAL ==========
+function calculate() {
+  const bw = parseFloat(document.getElementById('bodyweight').value) || 0;
+  const sq = parseFloat(document.getElementById('squat').value) || 0;
+  const bp = parseFloat(document.getElementById('bench').value) || 0;
+  const dl = parseFloat(document.getElementById('deadlift').value) || 0;
+  const total = sq + bp + dl;
+
+  document.getElementById('total-val').textContent = total > 0 ? total.toFixed(1) : '—';
+
+  if (bw > 0 && total > 0) {
+    document.getElementById('ipf-val').textContent = calcIPFGL(bw, total).toFixed(2);
+    document.getElementById('dots-val').textContent = calcDOTS(bw, total).toFixed(2);
+  } else {
+    document.getElementById('ipf-val').textContent = '—';
+    document.getElementById('dots-val').textContent = '—';
+  }
+}
+</script>
+
+</body>
+</html>
