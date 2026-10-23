@@ -1931,6 +1931,7 @@ window.addEventListener('DOMContentLoaded', () => {
 //  BAZA TRENINGÓW (data/sets.json)
 // ========================================================================
 const SETS_KEY = 'kalkSBD_sets_v1';
+const SETS_DIRTY_KEY = 'kalkSBD_sets_dirty';
 let LIFT_LABELS = {
   squat: 'Przysiad', bench: 'Wyciskanie', deadlift: 'Martwy ciąg',
   squat_equipped: 'Przysiad (sprzęt)', bench_equipped: 'Wyciskanie (sprzęt)', other: 'Inne'
@@ -1993,10 +1994,12 @@ async function initDataTab() {
 
   populateLiftSelects();
 
-  // dane: najpierw localStorage, inaczej z repo
+  // dane: repo jest źródłem prawdy; localStorage tylko gdy są w nim
+  // niezapisane (nie wysłane do repo) zmiany
   const stored = localStorage.getItem(SETS_KEY);
-  if (stored) {
+  if (stored && localStorage.getItem(SETS_DIRTY_KEY)) {
     try { dataSets = normalizeSets(JSON.parse(stored)); } catch (e) { dataSets = []; }
+    setSetsDirty(true);
     renderData();
     renderHistory2();
   } else {
@@ -2026,7 +2029,7 @@ async function fetchSetsFromRepo() {
     const resp = await fetch('data/sets.json', { cache: 'no-store' });
     if (!resp.ok) throw new Error('HTTP ' + resp.status);
     dataSets = normalizeSets(await resp.json());
-    saveSets();
+    saveSets(false);
     renderData();
   } catch (e) {
     empty.style.display = 'block';
@@ -2034,14 +2037,25 @@ async function fetchSetsFromRepo() {
   }
 }
 
-function saveSets() {
+// dirty = w przeglądarce są zmiany, których jeszcze nie ma w repo
+function saveSets(dirty = true) {
   localStorage.setItem(SETS_KEY, JSON.stringify(dataSets));
+  setSetsDirty(dirty);
   renderHistory2();
+}
+
+function setSetsDirty(dirty) {
+  if (dirty) localStorage.setItem(SETS_DIRTY_KEY, '1');
+  else localStorage.removeItem(SETS_DIRTY_KEY);
+  const btn = document.getElementById('btn-save-repo');
+  if (btn && !btn.disabled) btn.textContent = dirty ? '☁ Zapisz do repo •' : '☁ Zapisz do repo';
+  if (btn) btn.title = dirty ? 'Masz niezapisane zmiany — wyślij je do repo' : 'Wszystko zapisane w repo';
 }
 
 function reloadFromRepo() {
   if (!confirm('Przywrócić dane z repozytorium? Lokalne zmiany zostaną nadpisane.')) return;
   localStorage.removeItem(SETS_KEY);
+  setSetsDirty(false);
   fetchSetsFromRepo();
 }
 
@@ -2109,6 +2123,7 @@ async function saveToRepo() {
     await ghPutFile(token, 'data/history_v1.json',
       JSON.stringify(history, null, 2) + '\n',
       'Historia 1.0: zapis ze strony');
+    localStorage.removeItem(SETS_DIRTY_KEY);
     alert('Zapisano do repozytorium ✅\nNowa wersja pojawi się na stronie po ok. 1 minucie.');
   } catch (e) {
     if (e && (e.status === 401 || e.status === 403)) {
@@ -2119,7 +2134,7 @@ async function saveToRepo() {
     }
   } finally {
     btn.disabled = false;
-    btn.textContent = '☁ Zapisz do repo';
+    setSetsDirty(!!localStorage.getItem(SETS_DIRTY_KEY));
   }
 }
 
