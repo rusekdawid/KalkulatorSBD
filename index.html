@@ -328,6 +328,161 @@
   .icon-btn:hover { color: var(--text); border-color: var(--text-dim); }
   .icon-btn.danger:hover { color: var(--accent); border-color: var(--accent); }
 
+  /* ===== BAZA TRENINGÓW ===== */
+  .data-toolbar {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+
+  .data-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .data-actions .btn-primary { flex: 0 0 auto; }
+
+  .data-count {
+    margin-left: auto;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+
+  .table-scroll { overflow-x: auto; max-height: 72vh; overflow-y: auto; }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+    white-space: nowrap;
+  }
+
+  .data-table thead th {
+    position: sticky;
+    top: 0;
+    background: var(--surface2);
+    color: var(--text-dim);
+    text-transform: uppercase;
+    font-size: 0.68rem;
+    letter-spacing: 1px;
+    font-weight: 600;
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    cursor: default;
+    z-index: 2;
+  }
+
+  .data-table thead th[data-sort] { cursor: pointer; user-select: none; }
+  .data-table thead th[data-sort]:hover { color: var(--text); }
+  .data-table thead th.num { text-align: right; }
+  .data-table thead th .arrow { color: var(--accent); margin-left: 4px; }
+
+  .data-table tbody td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .data-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+  .data-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .data-table td.e1rm { color: var(--green); font-weight: 600; }
+  .data-table td.muted { color: var(--text-dim); }
+
+  .lift-badge {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+  }
+  .lift-badge.squat { color: #ff8fa3; border-color: rgba(230,57,70,0.4); }
+  .lift-badge.bench { color: var(--blue); border-color: rgba(74,158,255,0.4); }
+  .lift-badge.deadlift { color: var(--gold); border-color: rgba(244,162,97,0.4); }
+
+  .variant-classic { color: var(--green); }
+
+  .note-cell { max-width: 220px; white-space: normal; color: var(--text-dim); font-size: 0.78rem; }
+
+  .row-actions { display: flex; gap: 6px; }
+  .row-actions .icon-btn { width: 30px; height: 30px; font-size: 0.8rem; }
+
+  .data-empty { padding: 40px 20px; text-align: center; color: var(--text-dim); }
+
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(3px);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    width: 100%;
+    max-width: 640px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  .modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+  }
+
+  .modal-body { padding: 24px; overflow-y: auto; }
+
+  .editor-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .editor-meta {
+    margin-top: 16px;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+    word-break: break-all;
+  }
+  .editor-meta a { color: var(--blue); }
+
+  .modal-foot {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    padding: 18px 24px;
+    border-top: 1px solid var(--border);
+  }
+  .modal-foot .btn-primary { flex: 0 0 auto; padding: 12px 28px; }
+
+  @media (max-width: 600px) {
+    .data-toolbar { grid-template-columns: 1fr; }
+    .editor-grid { grid-template-columns: 1fr 1fr; }
+  }
+
   .header {
     text-align: center;
     margin-bottom: 48px;
@@ -711,6 +866,9 @@
       <button class="nav-item" data-tab="history" onclick="setTab('history')">
         <span class="nav-icon">📈</span> Historia wyników
       </button>
+      <button class="nav-item" data-tab="data" onclick="setTab('data')">
+        <span class="nav-icon">🗂️</span> Baza treningów
+      </button>
     </nav>
   </aside>
 
@@ -1036,6 +1194,131 @@
         <div class="hist-list" id="hist-sq-list"></div>
       </div>
     </div><!-- /tab-history -->
+
+    <!-- ===================== ZAKŁADKA: BAZA TRENINGÓW ===================== -->
+    <div class="tab-panel" id="tab-data">
+      <div class="header">
+        <h1>BAZA <span>TRENINGÓW</span></h1>
+        <p>Dane z Instagrama &bull; edycja i sortowanie</p>
+      </div>
+
+      <!-- PASEK NARZĘDZI -->
+      <div class="card">
+        <div class="data-toolbar">
+          <div class="input-group">
+            <label>Szukaj</label>
+            <input type="text" id="data-search" placeholder="wariant, notatka, sesja..." oninput="renderData()">
+          </div>
+          <div class="input-group">
+            <label>Bój</label>
+            <select id="data-filter-lift" onchange="renderData()">
+              <option value="">Wszystkie</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Źródło</label>
+            <select id="data-filter-source" onchange="renderData()">
+              <option value="">Wszystkie</option>
+              <option value="instagram">Instagram</option>
+              <option value="manual">Ręczne</option>
+            </select>
+          </div>
+        </div>
+        <div class="data-actions">
+          <button class="btn-primary" onclick="openEditor()">+ Dodaj serię</button>
+          <button class="btn-ghost" onclick="reloadFromRepo()">↻ Przywróć z repozytorium</button>
+          <span class="data-count" id="data-count">—</span>
+        </div>
+      </div>
+
+      <!-- TABELA -->
+      <div class="card" style="padding: 0; overflow: hidden;">
+        <div class="table-scroll">
+          <table class="data-table" id="data-table">
+            <thead>
+              <tr>
+                <th data-sort="date">Data</th>
+                <th data-sort="lift">Bój</th>
+                <th data-sort="variant">Wariant</th>
+                <th data-sort="weight_kg" class="num">Ciężar</th>
+                <th data-sort="reps" class="num">Powt.</th>
+                <th data-sort="sets" class="num">Serie</th>
+                <th data-sort="rir" class="num">RIR</th>
+                <th data-sort="rpe" class="num">RPE</th>
+                <th data-sort="e1rm" class="num">e1RM</th>
+                <th data-sort="note">Notatka</th>
+                <th>Akcje</th>
+              </tr>
+            </thead>
+            <tbody id="data-tbody"></tbody>
+          </table>
+        </div>
+        <div class="data-empty" id="data-empty" style="display:none">Wczytywanie danych…</div>
+      </div>
+    </div><!-- /tab-data -->
+
+    <!-- ===================== MODAL EDYCJI SERII ===================== -->
+    <div class="modal-overlay" id="editor-overlay" onclick="if(event.target===this)closeEditor()">
+      <div class="modal">
+        <div class="modal-head">
+          <span id="editor-title">Edytuj serię</span>
+          <button class="icon-btn" onclick="closeEditor()">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="editor-grid">
+            <div class="input-group">
+              <label>Data</label>
+              <input type="date" id="ed-date" min="2021-01-01" max="2030-12-31">
+            </div>
+            <div class="input-group">
+              <label>Sesja</label>
+              <input type="text" id="ed-session" placeholder="np. T4 Primary">
+            </div>
+            <div class="input-group">
+              <label>Bój</label>
+              <select id="ed-lift"></select>
+            </div>
+            <div class="input-group">
+              <label>Wariant</label>
+              <input type="text" id="ed-variant" placeholder="Klasyczny, Pauzowany...">
+            </div>
+            <div class="input-group">
+              <label>Ciężar (kg)</label>
+              <input type="number" id="ed-weight" step="0.5" oninput="updateEditorE1RM()">
+            </div>
+            <div class="input-group">
+              <label>Powtórzenia</label>
+              <input type="number" id="ed-reps" step="1" min="0" placeholder="puste = brak" oninput="updateEditorE1RM()">
+            </div>
+            <div class="input-group">
+              <label>Serie</label>
+              <input type="number" id="ed-sets" step="1" min="1" value="1">
+            </div>
+            <div class="input-group">
+              <label>RIR</label>
+              <input type="number" id="ed-rir" step="0.5" min="0" placeholder="puste = brak">
+            </div>
+            <div class="input-group">
+              <label>RPE</label>
+              <input type="number" id="ed-rpe" step="0.5" min="1" max="10" placeholder="puste = brak">
+            </div>
+            <div class="input-group">
+              <label>e1RM (auto)</label>
+              <input type="text" id="ed-e1rm" disabled>
+            </div>
+          </div>
+          <div class="input-group" style="margin-top:16px">
+            <label>Notatka</label>
+            <input type="text" id="ed-note" placeholder="np. PR, Back-off, Nieudane">
+          </div>
+          <div class="editor-meta" id="ed-meta"></div>
+        </div>
+        <div class="modal-foot">
+          <button class="btn-ghost" onclick="closeEditor()">Anuluj</button>
+          <button class="btn-primary" onclick="saveEditor()">Zapisz</button>
+        </div>
+      </div>
+    </div>
 
     </div><!-- /container -->
   </main>
@@ -1406,7 +1689,286 @@ window.addEventListener('DOMContentLoaded', () => {
     updateHistPreview(lift);
     renderLift(lift);
   });
+  initDataTab();
 });
+
+// ========================================================================
+//  BAZA TRENINGÓW (data/sets.json)
+// ========================================================================
+const SETS_KEY = 'kalkSBD_sets_v1';
+let LIFT_LABELS = {
+  squat: 'Przysiad', bench: 'Wyciskanie', deadlift: 'Martwy ciąg',
+  squat_equipped: 'Przysiad (sprzęt)', bench_equipped: 'Wyciskanie (sprzęt)', other: 'Inne'
+};
+let dataSets = [];
+let dataSort = { key: 'date', dir: 'desc' };
+let editingSetId = null;
+
+// e1RM wg README dla tych danych: Epley, tylko gdy reps > 0
+function epley(weight, reps) {
+  if (!weight || !reps || reps <= 0) return null;
+  return Math.round(weight * (1 + reps / 30) * 10) / 10;
+}
+
+function liftClass(lift) {
+  if (lift === 'squat' || lift === 'squat_equipped') return 'squat';
+  if (lift === 'bench' || lift === 'bench_equipped') return 'bench';
+  if (lift === 'deadlift') return 'deadlift';
+  return '';
+}
+
+async function initDataTab() {
+  // etykiety bojów z meta.json (jeśli dostępne)
+  try {
+    const metaResp = await fetch('data/meta.json', { cache: 'no-store' });
+    if (metaResp.ok) {
+      const meta = await metaResp.json();
+      if (meta.lift_labels) LIFT_LABELS = meta.lift_labels;
+    }
+  } catch (e) { /* zostają domyślne */ }
+
+  populateLiftSelects();
+
+  // dane: najpierw localStorage, inaczej z repo
+  const stored = localStorage.getItem(SETS_KEY);
+  if (stored) {
+    try { dataSets = JSON.parse(stored); } catch (e) { dataSets = []; }
+    renderData();
+  } else {
+    await fetchSetsFromRepo();
+  }
+
+  // sortowanie po kliknięciu nagłówka
+  document.querySelectorAll('#data-table thead th[data-sort]').forEach(th => {
+    th.addEventListener('click', () => {
+      const key = th.dataset.sort;
+      if (dataSort.key === key) {
+        dataSort.dir = dataSort.dir === 'asc' ? 'desc' : 'asc';
+      } else {
+        dataSort.key = key;
+        dataSort.dir = (key === 'date') ? 'desc' : 'asc';
+      }
+      renderData();
+    });
+  });
+}
+
+async function fetchSetsFromRepo() {
+  const empty = document.getElementById('data-empty');
+  empty.style.display = 'block';
+  empty.textContent = 'Wczytywanie danych…';
+  try {
+    const resp = await fetch('data/sets.json', { cache: 'no-store' });
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    dataSets = await resp.json();
+    saveSets();
+    renderData();
+  } catch (e) {
+    empty.style.display = 'block';
+    empty.textContent = 'Nie udało się wczytać data/sets.json (' + e.message + '). Otwórz stronę przez GitHub Pages.';
+  }
+}
+
+function saveSets() {
+  localStorage.setItem(SETS_KEY, JSON.stringify(dataSets));
+}
+
+function reloadFromRepo() {
+  if (!confirm('Przywrócić dane z repozytorium? Lokalne zmiany zostaną nadpisane.')) return;
+  localStorage.removeItem(SETS_KEY);
+  fetchSetsFromRepo();
+}
+
+function populateLiftSelects() {
+  const filter = document.getElementById('data-filter-lift');
+  const editor = document.getElementById('ed-lift');
+  const opts = Object.entries(LIFT_LABELS)
+    .map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
+  filter.innerHTML = '<option value="">Wszystkie</option>' + opts;
+  editor.innerHTML = opts;
+}
+
+function getFiltered() {
+  const q = document.getElementById('data-search').value.trim().toLowerCase();
+  const fl = document.getElementById('data-filter-lift').value;
+  const fs = document.getElementById('data-filter-source').value;
+
+  let rows = dataSets.filter(r => {
+    if (fl && r.lift !== fl) return false;
+    if (fs && r.source !== fs) return false;
+    if (q) {
+      const hay = [r.variant, r.note, r.session, LIFT_LABELS[r.lift]]
+        .filter(Boolean).join(' ').toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  const { key, dir } = dataSort;
+  const mul = dir === 'asc' ? 1 : -1;
+  rows.sort((a, b) => {
+    let va, vb;
+    if (key === 'e1rm') { va = epley(a.weight_kg, a.reps); vb = epley(b.weight_kg, b.reps); }
+    else if (key === 'lift') { va = LIFT_LABELS[a.lift] || a.lift; vb = LIFT_LABELS[b.lift] || b.lift; }
+    else { va = a[key]; vb = b[key]; }
+    // null/undefined zawsze na koniec
+    const na = (va === null || va === undefined || va === '');
+    const nb = (vb === null || vb === undefined || vb === '');
+    if (na && nb) return 0;
+    if (na) return 1;
+    if (nb) return -1;
+    if (typeof va === 'number' && typeof vb === 'number') return (va - vb) * mul;
+    return String(va).localeCompare(String(vb), 'pl') * mul;
+  });
+  return rows;
+}
+
+function renderData() {
+  const tbody = document.getElementById('data-tbody');
+  const empty = document.getElementById('data-empty');
+  const rows = getFiltered();
+
+  document.getElementById('data-count').textContent =
+    `${rows.length} / ${dataSets.length} serii`;
+
+  // strzałki sortowania w nagłówkach
+  document.querySelectorAll('#data-table thead th[data-sort]').forEach(th => {
+    const base = th.dataset.sortLabel || th.textContent.replace(/[▲▼].*$/, '').trim();
+    th.dataset.sortLabel = base;
+    th.innerHTML = base + (dataSort.key === th.dataset.sort
+      ? ` <span class="arrow">${dataSort.dir === 'asc' ? '▲' : '▼'}</span>` : '');
+  });
+
+  if (rows.length === 0) {
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+    empty.textContent = dataSets.length === 0 ? 'Brak danych.' : 'Brak wyników dla filtrów.';
+    return;
+  }
+  empty.style.display = 'none';
+
+  tbody.innerHTML = rows.map(r => {
+    const e = epley(r.weight_kg, r.reps);
+    const variantCls = r.variant === 'Klasyczny' ? 'variant-classic' : '';
+    const reps = (r.reps === null || r.reps === undefined) ? '—' : (r.reps === 0 ? '✗' : r.reps);
+    return `
+      <tr>
+        <td class="muted">${fmtDate(r.date)}</td>
+        <td><span class="lift-badge ${liftClass(r.lift)}">${LIFT_LABELS[r.lift] || r.lift}</span></td>
+        <td class="${variantCls}">${r.variant || '—'}</td>
+        <td class="num">${r.weight_kg ?? '—'}</td>
+        <td class="num">${reps}</td>
+        <td class="num muted">${r.sets ?? 1}</td>
+        <td class="num">${r.rir ?? '—'}</td>
+        <td class="num">${r.rpe ?? '—'}</td>
+        <td class="num e1rm">${e ?? '—'}</td>
+        <td class="note-cell">${r.note ? escapeHtml(r.note) : ''}</td>
+        <td>
+          <div class="row-actions">
+            <button class="icon-btn" title="Edytuj" onclick="openEditor('${r.id}')">✏️</button>
+            <button class="icon-btn danger" title="Usuń" onclick="deleteSet('${r.id}')">🗑️</button>
+          </div>
+        </td>
+      </tr>`;
+  }).join('');
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+}
+
+function updateEditorE1RM() {
+  const w = parseFloat(document.getElementById('ed-weight').value);
+  const reps = parseInt(document.getElementById('ed-reps').value);
+  const e = epley(w, reps);
+  document.getElementById('ed-e1rm').value = e ? e + ' kg' : '—';
+}
+
+function openEditor(id) {
+  editingSetId = id || null;
+  const r = id ? dataSets.find(x => x.id === id) : null;
+  document.getElementById('editor-title').textContent = r ? 'Edytuj serię' : 'Nowa seria';
+
+  document.getElementById('ed-date').value = r ? r.date : new Date().toISOString().slice(0, 10);
+  document.getElementById('ed-session').value = r ? (r.session || '') : '';
+  document.getElementById('ed-lift').value = r ? r.lift : 'squat';
+  document.getElementById('ed-variant').value = r ? (r.variant || '') : 'Klasyczny';
+  document.getElementById('ed-weight').value = r ? (r.weight_kg ?? '') : '';
+  document.getElementById('ed-reps').value = (r && r.reps !== null && r.reps !== undefined) ? r.reps : '';
+  document.getElementById('ed-sets').value = r ? (r.sets ?? 1) : 1;
+  document.getElementById('ed-rir').value = (r && r.rir !== null && r.rir !== undefined) ? r.rir : '';
+  document.getElementById('ed-rpe').value = (r && r.rpe !== null && r.rpe !== undefined) ? r.rpe : '';
+  document.getElementById('ed-note').value = r ? (r.note || '') : '';
+  updateEditorE1RM();
+
+  const meta = document.getElementById('ed-meta');
+  if (r) {
+    const parts = [`Źródło: ${r.source || 'manual'}`, `ID: ${r.id}`];
+    if (r.effort_raw) parts.push(`Zapis wysiłku (oryginał): "${r.effort_raw}"`);
+    if (r.session) parts.push(`Sesja: ${r.session}`);
+    if (r.post_date) parts.push(`Data posta: ${fmtDate(r.post_date)}`);
+    if (r.post_url) parts.push(`<a href="${r.post_url}" target="_blank" rel="noopener">Zobacz post ↗</a>`);
+    meta.innerHTML = parts.join(' &bull; ');
+  } else {
+    meta.innerHTML = 'Nowy wpis zostanie oznaczony jako <strong>ręczny</strong> (source: manual).';
+  }
+
+  document.getElementById('editor-overlay').classList.add('open');
+}
+
+function closeEditor() {
+  document.getElementById('editor-overlay').classList.remove('open');
+  editingSetId = null;
+}
+
+function saveEditor() {
+  const date = document.getElementById('ed-date').value;
+  const weight = parseFloat(document.getElementById('ed-weight').value);
+  if (!date) { alert('Podaj datę.'); return; }
+  if (!(weight > 0)) { alert('Podaj ciężar.'); return; }
+
+  const repsRaw = document.getElementById('ed-reps').value.trim();
+  const rirRaw = document.getElementById('ed-rir').value.trim();
+  const rpeRaw = document.getElementById('ed-rpe').value.trim();
+
+  const fields = {
+    date,
+    session: document.getElementById('ed-session').value.trim() || null,
+    lift: document.getElementById('ed-lift').value,
+    variant: document.getElementById('ed-variant').value.trim() || 'Klasyczny',
+    weight_kg: weight,
+    reps: repsRaw === '' ? null : parseInt(repsRaw),
+    sets: parseInt(document.getElementById('ed-sets').value) || 1,
+    rir: rirRaw === '' ? null : parseFloat(rirRaw),
+    rpe: rpeRaw === '' ? null : parseFloat(rpeRaw),
+    note: document.getElementById('ed-note').value.trim() || null
+  };
+
+  if (editingSetId) {
+    const r = dataSets.find(x => x.id === editingSetId);
+    if (r) Object.assign(r, fields);
+  } else {
+    dataSets.push(Object.assign({
+      id: 'm-' + Date.now().toString(36),
+      post_date: null, effort_raw: null,
+      plan_block: null, plan_week: null,
+      source: 'manual', post_url: null
+    }, fields));
+  }
+
+  saveSets();
+  renderData();
+  closeEditor();
+}
+
+function deleteSet(id) {
+  const r = dataSets.find(x => x.id === id);
+  if (!r) return;
+  if (!confirm(`Usunąć serię z ${fmtDate(r.date)} (${LIFT_LABELS[r.lift] || r.lift}, ${r.weight_kg} kg)?`)) return;
+  dataSets = dataSets.filter(x => x.id !== id);
+  saveSets();
+  renderData();
+}
 </script>
 
 </body>

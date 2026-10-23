@@ -1,0 +1,21 @@
+{
+ "athlete": "Dawid Rusin",
+ "instagram": "rusek.powerlifting",
+ "generated": "2026-10-23",
+ "units": "kg",
+ "lift_labels": {
+  "squat": "Przysiad",
+  "bench": "Wyciskanie",
+  "deadlift": "Martwy ciąg",
+  "squat_equipped": "Przysiad (sprzęt)",
+  "bench_equipped": "Wyciskanie (sprzęt)",
+  "other": "Inne"
+ },
+ "bio_bests": {
+  "squat": 275,
+  "bench": 160,
+  "bench_note": "200 blue monster (sprzęt)",
+  "deadlift": 275,
+  "ohp": 95
+ }
+}

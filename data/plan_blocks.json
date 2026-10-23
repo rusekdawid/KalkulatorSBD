@@ -1,0 +1,93 @@
+[
+ {
+  "id": "block-1",
+  "sheet": "Plan 1",
+  "period": "lipiec – wrzesień 2023",
+  "anchors": "Tydz 5 = 06.08.2023 (post „Week5”)",
+  "note": null
+ },
+ {
+  "id": "block-2",
+  "sheet": "Plan 2",
+  "period": "wrzesień – październik 2023",
+  "anchors": "Tydz 2 = 22.09.2023 („14 weeks out”)",
+  "note": "Przygotowania do Debiutów TSK"
+ },
+ {
+  "id": "block-3",
+  "sheet": "Peak",
+  "period": "listopad – grudzień 2023",
+  "anchors": "Tydz 1 = 06.11.2023 … Tydz 6 = 12.12.2023",
+  "note": "Peak → Debiuty TSK 16.12.2023 (600 kg)"
+ },
+ {
+  "id": "block-4",
+  "sheet": "AMPY",
+  "period": "luty – kwiecień 2024",
+  "anchors": "Tydz 5 ≈ 09.03.2024; PEAK Tydz 3 = 06.04, Tydz 5 = 22.04, Tydz 6 = 28.04.2024",
+  "note": "Blok + peak → AMP 2024"
+ },
+ {
+  "id": "block-5",
+  "sheet": "Plan 3",
+  "period": "czerwiec – lipiec 2024",
+  "anchors": "Tydz 3 = 08–12.07, Tydz 4 = 15.07, Tydz 5 = 22.07.2024",
+  "note": "Squat raw, 2× pauza, deficyt"
+ },
+ {
+  "id": "block-6",
+  "sheet": "Plan 2.",
+  "period": "sierpień – wrzesień 2024 (?)",
+  "anchors": null,
+  "note": "Ciężary częściowo pasują do postów z 16.08, 22.08 i 12.09.2024, ale kolejność tygodni się nie zgadza – nie przypisałem"
+ },
+ {
+  "id": "block-7",
+  "sheet": "Plan 4",
+  "period": "12.10 – 30.11.2024",
+  "anchors": "Tydz 1 = 12.10 („1 tydzień nowego planu”), Tydz 3 = 26.10, Tydz 4 = 01.11, Tydz 8 = 30.11.2024",
+  "note": null
+ },
+ {
+  "id": "block-8",
+  "sheet": "Plan 5",
+  "period": "grudzień 2024 – styczeń 2025 (?)",
+  "anchors": null,
+  "note": "Brak postów z ciężarami w tym okresie – nie da się potwierdzić"
+ },
+ {
+  "id": "block-9",
+  "sheet": "Plan 6",
+  "period": "styczeń – luty 2025",
+  "anchors": "Tydz 4 = 16.02.2025 („11 weeks out”)",
+  "note": null
+ },
+ {
+  "id": "block-10",
+  "sheet": "Plan 7",
+  "period": "marzec – maj 2025",
+  "anchors": "Tydz 2 = 23.03, Tydz 3 = 31.03, Tydz 5 = 12.04, Tydz 6 = 18.04, Tydz 7 = 27.04, Tydz 8 = 02.05.2025",
+  "note": "Daty tygodni 4–8 są też wpisane w samym planie (04.04, 12.04, 19.04, 26.04, 03.05) – zgadzają się z postami → AMP 2025 (660 kg)"
+ },
+ {
+  "id": "block-11",
+  "sheet": "Nowy Plan",
+  "period": "jesień 2025 (?)",
+  "anchors": null,
+  "note": "Plan oparty na RPE, bez ciężarów; wpisy (BP 110–116) nie pokrywają się z żadnym postem"
+ },
+ {
+  "id": "block-12",
+  "sheet": "Wyciskanie",
+  "period": "?",
+  "anchors": null,
+  "note": "Brak pokrycia z postami"
+ },
+ {
+  "id": "block-13",
+  "sheet": "(brak w pliku)",
+  "period": "2026",
+  "anchors": null,
+  "note": "Bloki z 2026 (T1–T6 przed AMP 2026 i bloki od sierpnia 2026) nie mają arkusza w tym pliku"
+ }
+]

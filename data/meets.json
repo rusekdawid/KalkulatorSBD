@@ -1,0 +1,130 @@
+[
+ {
+  "id": "meet-2023-12-16",
+  "date": "2023-12-16",
+  "name": "VII Ogólnopolskie Debiuty TSK",
+  "note": "3. miejsce w kat. 105+",
+  "source": "instagram",
+  "post_url": "https://www.instagram.com/rusek.powerlifting/p/C07qbNBoOv4/",
+  "attempts": {
+   "squat": [
+    {
+     "weight_kg": 210,
+     "good": true
+    },
+    {
+     "weight_kg": 225,
+     "good": true
+    },
+    {
+     "weight_kg": 235,
+     "good": true
+    }
+   ],
+   "bench": [
+    {
+     "weight_kg": 125,
+     "good": true
+    },
+    {
+     "weight_kg": 132.5,
+     "good": true
+    },
+    {
+     "weight_kg": 140,
+     "good": false
+    }
+   ],
+   "deadlift": [
+    {
+     "weight_kg": 210,
+     "good": true
+    },
+    {
+     "weight_kg": 232.5,
+     "good": true
+    },
+    {
+     "weight_kg": 250,
+     "good": false
+    }
+   ]
+  }
+ },
+ {
+  "id": "meet-2025-05-13",
+  "date": "2025-05-13",
+  "name": "AMP 2025",
+  "note": null,
+  "source": "instagram",
+  "post_url": "https://www.instagram.com/rusek.powerlifting/p/DJmWpMmoI4u/",
+  "attempts": {
+   "squat": [
+    {
+     "weight_kg": 240,
+     "good": true
+    },
+    {
+     "weight_kg": 250,
+     "good": true
+    },
+    {
+     "weight_kg": 260,
+     "good": true
+    }
+   ],
+   "bench": [
+    {
+     "weight_kg": 135,
+     "good": true
+    },
+    {
+     "weight_kg": 140,
+     "good": true
+    },
+    {
+     "weight_kg": 145,
+     "good": false
+    }
+   ],
+   "deadlift": [
+    {
+     "weight_kg": 250,
+     "good": true
+    },
+    {
+     "weight_kg": 260,
+     "good": true
+    },
+    {
+     "weight_kg": 265,
+     "good": false
+    }
+   ]
+  }
+ },
+ {
+  "id": "meet-2026-05-12",
+  "date": "2026-05-12",
+  "name": "AMP 2026",
+  "note": "9/9 i PR w każdym boju wg opisu; w opisie podany tylko przysiad 275",
+  "source": "instagram",
+  "post_url": "https://www.instagram.com/rusek.powerlifting/p/DYQj5OAiLUp/",
+  "attempts": {
+   "squat": [
+    {
+     "weight_kg": null,
+     "good": true
+    },
+    {
+     "weight_kg": null,
+     "good": true
+    },
+    {
+     "weight_kg": 275,
+     "good": true
+    }
+   ]
+  }
+ }
+]
