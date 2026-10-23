@@ -206,6 +206,16 @@
     padding: 20px;
   }
 
+  .charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .charts-grid .card { margin-bottom: 0; }
+  @media (max-width: 900px) {
+    .charts-grid { grid-template-columns: 1fr; }
+  }
+
   .hist-form {
     display: grid;
     grid-template-columns: 1.3fr 1fr 0.8fr 0.8fr;
@@ -900,6 +910,9 @@
       <button class="nav-item" data-tab="history" onclick="setTab('history')">
         <span class="nav-icon">📈</span> Historia wyników
       </button>
+      <button class="nav-item" data-tab="history2" onclick="setTab('history2')">
+        <span class="nav-icon">📊</span> Historia 2.0
+      </button>
       <button class="nav-item" data-tab="data" onclick="setTab('data')">
         <span class="nav-icon">🗂️</span> Baza treningów
       </button>
@@ -1229,6 +1242,45 @@
       </div>
     </div><!-- /tab-history -->
 
+    <!-- ===================== ZAKŁADKA: HISTORIA 2.0 ===================== -->
+    <div class="tab-panel" id="tab-history2">
+      <div class="header">
+        <h1>HISTORIA <span>2.0</span></h1>
+        <p>Progres 1RM z serii Competition &bull; e1RM = Epley (bez RPE)</p>
+      </div>
+
+      <div class="charts-grid">
+        <div class="card">
+          <div class="card-title"><div class="icon">🦵</div> PRZYSIAD</div>
+          <div class="chart-wrap">
+            <canvas id="chart2-squat"></canvas>
+            <div class="chart-empty" id="empty2-squat">Brak danych.</div>
+          </div>
+        </div>
+        <div class="card blue-accent">
+          <div class="card-title"><div class="icon blue">🏋️</div> WYCISKANIE</div>
+          <div class="chart-wrap">
+            <canvas id="chart2-bench"></canvas>
+            <div class="chart-empty" id="empty2-bench">Brak danych.</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><div class="icon">🪝</div> MARTWY CIĄG</div>
+          <div class="chart-wrap">
+            <canvas id="chart2-deadlift"></canvas>
+            <div class="chart-empty" id="empty2-deadlift">Brak danych.</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><div class="icon">🏆</div> TOTAL (suma rekordów 1RM w czasie)</div>
+          <div class="chart-wrap">
+            <canvas id="chart2-total"></canvas>
+            <div class="chart-empty" id="empty2-total">Brak danych.</div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /tab-history2 -->
+
     <!-- ===================== ZAKŁADKA: BAZA TRENINGÓW ===================== -->
     <div class="tab-panel" id="tab-data">
       <div class="header">
@@ -1374,10 +1426,11 @@ function setTab(tab) {
   document.querySelectorAll('.nav-item').forEach(b => {
     b.classList.toggle('active', b.dataset.tab === tab);
   });
-  // Baza treningów na całą szerokość, pozostałe zakładki węższe
-  document.querySelector('.container').classList.toggle('wide', tab === 'data');
+  // Baza treningów i Historia 2.0 na całą szerokość, pozostałe węższe
+  document.querySelector('.container').classList.toggle('wide', tab === 'data' || tab === 'history2');
   // Chart.js potrzebuje przeliczenia rozmiaru gdy panel staje się widoczny
   if (tab === 'history') ACTIVE_LIFTS.forEach(l => { if (charts[l]) charts[l].resize(); });
+  if (tab === 'history2') Object.values(charts2).forEach(c => c && c.resize());
 }
 
 let gender = 'M';
@@ -1805,6 +1858,7 @@ async function initDataTab() {
   if (stored) {
     try { dataSets = normalizeSets(JSON.parse(stored)); } catch (e) { dataSets = []; }
     renderData();
+    renderHistory2();
   } else {
     await fetchSetsFromRepo();
   }
@@ -1842,6 +1896,7 @@ async function fetchSetsFromRepo() {
 
 function saveSets() {
   localStorage.setItem(SETS_KEY, JSON.stringify(dataSets));
+  renderHistory2();
 }
 
 function reloadFromRepo() {
@@ -2054,6 +2109,122 @@ function deleteSet(id) {
   dataSets = dataSets.filter(x => x.id !== id);
   saveSets();
   renderData();
+}
+
+// ========================================================================
+//  HISTORIA 2.0 — 4 wykresy (SQ / BP / DL / Total) z serii Competition
+//  e1RM liczony wzorem Epley, bez uwzględniania RPE/RIR.
+// ========================================================================
+let charts2 = {};
+const H2_COLORS = {
+  squat:    '#e63946',
+  bench:    '#4a9eff',
+  deadlift: '#f4a261',
+  total:    '#2ecc71'
+};
+
+function competitionPoints(lift) {
+  // serie Competition danego boju, reps>0 i ciężar>0, posortowane po dacie
+  return dataSets
+    .filter(r => r.variant === 'Competition' && r.lift === lift && r.reps > 0 && r.weight_kg > 0)
+    .map(r => ({ date: r.date, e1rm: epley(r.weight_kg, r.reps) }))
+    .filter(p => p.e1rm)
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
+// Total = suma bieżących rekordów (running max) 1RM trzech bojów.
+// Punkt pojawia się, gdy każdy z bojów ma już co najmniej jeden wynik.
+function totalPoints() {
+  const all = ['squat', 'bench', 'deadlift']
+    .flatMap(lift => competitionPoints(lift).map(p => ({ ...p, lift })))
+    .sort((a, b) => a.date.localeCompare(b.date));
+  const best = { squat: 0, bench: 0, deadlift: 0 };
+  const out = [];
+  for (const p of all) {
+    if (p.e1rm > best[p.lift]) best[p.lift] = p.e1rm;
+    if (best.squat && best.bench && best.deadlift) {
+      const total = Math.round((best.squat + best.bench + best.deadlift) * 10) / 10;
+      // nadpisz punkt dla tej samej daty, inaczej dodaj nowy
+      if (out.length && out[out.length - 1].date === p.date) out[out.length - 1].e1rm = total;
+      else out.push({ date: p.date, e1rm: total });
+    }
+  }
+  return out;
+}
+
+function drawH2Chart(key, points, label) {
+  const canvas = document.getElementById(`chart2-${key}`);
+  const emptyEl = document.getElementById(`empty2-${key}`);
+  if (!canvas) return;
+
+  if (!points.length) {
+    if (emptyEl) emptyEl.style.display = 'flex';
+    canvas.style.display = 'none';
+    if (charts2[key]) { charts2[key].destroy(); charts2[key] = null; }
+    return;
+  }
+  if (emptyEl) emptyEl.style.display = 'none';
+  canvas.style.display = 'block';
+
+  const labels = points.map(p => fmtDate(p.date));
+  const data = points.map(p => p.e1rm);
+  const color = H2_COLORS[key];
+
+  if (charts2[key]) {
+    charts2[key].data.labels = labels;
+    charts2[key].data.datasets[0].data = data;
+    charts2[key].update();
+    return;
+  }
+
+  charts2[key] = new Chart(canvas.getContext('2d'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label,
+        data,
+        borderColor: color,
+        backgroundColor: color + '22',
+        borderWidth: 3,
+        pointBackgroundColor: color,
+        pointBorderColor: '#fff',
+        pointBorderWidth: 1.5,
+        pointRadius: 3,
+        pointHoverRadius: 6,
+        tension: 0.25,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { labels: { color: '#e8e8f0', font: { size: 13 } } },
+        tooltip: {
+          backgroundColor: '#1a1a24',
+          borderColor: '#2a2a3a',
+          borderWidth: 1,
+          titleColor: '#e8e8f0',
+          bodyColor: color,
+          callbacks: { label: (ctx) => `${ctx.parsed.y} kg` }
+        }
+      },
+      scales: {
+        x: { grid: { color: 'rgba(42,42,58,0.6)' }, ticks: { color: '#8888a0', maxTicksLimit: 10, autoSkip: true } },
+        y: { grid: { color: 'rgba(42,42,58,0.6)' }, ticks: { color: '#8888a0', callback: (v) => v + ' kg' } }
+      }
+    }
+  });
+}
+
+function renderHistory2() {
+  if (typeof Chart === 'undefined') return;   // biblioteka jeszcze nie gotowa
+  drawH2Chart('squat',    competitionPoints('squat'),    'Przysiad — 1RM (kg)');
+  drawH2Chart('bench',    competitionPoints('bench'),    'Wyciskanie — 1RM (kg)');
+  drawH2Chart('deadlift', competitionPoints('deadlift'), 'Martwy ciąg — 1RM (kg)');
+  drawH2Chart('total',    totalPoints(),                 'Total — suma rekordów (kg)');
 }
 </script>
 
