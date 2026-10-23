@@ -6,7 +6,7 @@
     "session": null,
     "lift": "squat",
     "variant": "Competition",
-    "knee": null,
+    "knee": "SBD",
     "weight_kg": 232.5,
     "reps": 3,
     "rir": 2.5,
@@ -92,7 +92,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/Dekue7DCBF6/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/Dekue7DCBF6/",
+    "knee": "SBD"
   },
   {
     "id": "ig-Dekue7DCBF6-2",
@@ -206,7 +207,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DeSJGE5EcfA/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DeSJGE5EcfA/",
+    "knee": "SBD"
   },
   {
     "id": "ig-DeSJGE5EcfA-2",
@@ -320,7 +322,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/Dd4lzMbkRCw/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/Dd4lzMbkRCw/",
+    "knee": "SBD"
   },
   {
     "id": "ig-Dd4lzMbkRCw-2",
@@ -339,7 +342,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/Dd4lzMbkRCw/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/Dd4lzMbkRCw/",
+    "knee": "SBD"
   },
   {
     "id": "ig-Dd4lzMbkRCw-3",
@@ -472,7 +476,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DdkE5uzkXaD/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DdkE5uzkXaD/",
+    "knee": "SBD"
   },
   {
     "id": "ig-DdkE5uzkXaD-2",
@@ -529,7 +534,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DdLhCnoES_5/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DdLhCnoES_5/",
+    "knee": "SBD"
   },
   {
     "id": "ig-DdLhCnoES_5-2",
@@ -548,7 +554,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DdLhCnoES_5/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DdLhCnoES_5/",
+    "knee": "SBD"
   },
   {
     "id": "ig-DdLhCnoES_5-3",
@@ -709,7 +716,7 @@
     "session": null,
     "lift": "squat",
     "variant": "Competition",
-    "knee": null,
+    "knee": "SBD",
     "weight_kg": 230,
     "reps": 3,
     "rir": 2,
@@ -789,13 +796,14 @@
     "reps": 3,
     "sets": 1,
     "rir": 2,
-    "rpe": null,
+    "rpe": 8,
     "effort_raw": "RIR 2",
     "note": null,
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/Dc11rCoiOkn/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/Dc11rCoiOkn/",
+    "knee": "SBD"
   },
   {
     "id": "ig-Dc11rCoiOkn-2",
@@ -909,7 +917,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DcewG5CCJsf/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DcewG5CCJsf/",
+    "knee": "SBD"
   },
   {
     "id": "ig-DcewG5CCJsf-2",
@@ -966,7 +975,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DcKBz7lCPAb/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DcKBz7lCPAb/",
+    "knee": "SBD"
   },
   {
     "id": "ig-DcKBz7lCPAb-2",
@@ -1023,7 +1033,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DcCd5T3CEYM/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DcCd5T3CEYM/",
+    "knee": "SBD"
   },
   {
     "id": "ig-DcCd5T3CEYM-2",
@@ -1080,7 +1091,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/Db36EsmEZOo/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/Db36EsmEZOo/",
+    "knee": "SBD"
   },
   {
     "id": "ig-Db36EsmEZOo-2",
@@ -1137,7 +1149,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/Db375cWkZvy/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/Db375cWkZvy/",
+    "knee": "SBD"
   },
   {
     "id": "ig-Db375cWkZvy-2",
@@ -1251,7 +1264,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/Dbel_t1iNUt/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/Dbel_t1iNUt/",
+    "knee": "SBD"
   },
   {
     "id": "ig-Dbel_t1iNUt-2",
@@ -1298,7 +1312,7 @@
     "session": null,
     "lift": "squat",
     "variant": "Competition",
-    "knee": null,
+    "knee": "SBD",
     "weight_kg": 210,
     "reps": 3,
     "rir": 6,
@@ -1327,7 +1341,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DabS3MvEW7t/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DabS3MvEW7t/",
+    "knee": "SBD"
   },
   {
     "id": "ig-DabS3MvEW7t-2",
@@ -1384,7 +1399,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DZ8hCWAiOEe/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DZ8hCWAiOEe/",
+    "knee": "SBD"
   },
   {
     "id": "ig-DZ8hCWAiOEe-2",
@@ -1431,7 +1447,7 @@
     "session": null,
     "lift": "squat",
     "variant": "Competition",
-    "knee": null,
+    "knee": "SBD",
     "weight_kg": 215,
     "reps": 4,
     "rir": 3,
@@ -6763,25 +6779,6 @@
     "plan_week": null,
     "source": "instagram",
     "post_url": "https://www.instagram.com/rusek.powerlifting/p/CPvC5M7L-te/"
-  },
-  {
-    "id": "ig-CPiuTTIrPbu-1",
-    "date": "2021-05-31",
-    "post_date": "2021-05-31",
-    "session": null,
-    "lift": "squat",
-    "variant": "Competition",
-    "weight_kg": 120,
-    "reps": 3,
-    "sets": 1,
-    "rir": null,
-    "rpe": null,
-    "effort_raw": null,
-    "note": null,
-    "plan_block": null,
-    "plan_week": null,
-    "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/CPiuTTIrPbu/"
   },
   {
     "id": "ig-CPiuTTIrPbu-2",
