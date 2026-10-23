@@ -188,6 +188,146 @@
   }
   .placeholder-chart .ph-sub { font-size: 0.82rem; max-width: 340px; line-height: 1.6; }
 
+  /* ===== HISTORIA / WYKRESY ===== */
+  .chart-wrap {
+    position: relative;
+    height: 420px;
+    width: 100%;
+  }
+
+  .chart-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .hist-form {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 0.8fr 0.8fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .hist-preview {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+
+  .hist-preview strong {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+    color: var(--green);
+    font-weight: 400;
+  }
+
+  .btn-row { display: flex; gap: 12px; }
+
+  .btn-primary {
+    flex: 1;
+    padding: 14px;
+    background: var(--accent);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-primary:hover { box-shadow: 0 0 24px var(--accent-glow); transform: translateY(-1px); }
+
+  .btn-ghost {
+    padding: 14px 20px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-dim);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-ghost:hover { border-color: var(--accent); color: var(--text); }
+
+  .hist-list { display: flex; flex-direction: column; gap: 10px; }
+
+  .hist-empty {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    padding: 24px 10px;
+  }
+
+  .hist-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    align-items: center;
+    gap: 14px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+  }
+
+  .hist-item.editing { border-color: var(--blue); box-shadow: 0 0 16px rgba(74,158,255,0.2); }
+
+  .hist-item .h-date {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text);
+    min-width: 92px;
+  }
+
+  .hist-item .h-detail { font-size: 0.8rem; color: var(--text-dim); }
+
+  .hist-item .h-e1rm {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    color: var(--green);
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  .hist-item .h-actions { display: flex; gap: 6px; }
+
+  .icon-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--input-bg);
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .icon-btn:hover { color: var(--text); border-color: var(--text-dim); }
+  .icon-btn.danger:hover { color: var(--accent); border-color: var(--accent); }
+
   .header {
     text-align: center;
     margin-bottom: 48px;
@@ -503,6 +643,22 @@
     .nav-label { display: none; }
     .nav-item { padding: 10px 14px; white-space: nowrap; }
     .container { padding: 28px 16px 48px; }
+    .chart-wrap { height: 320px; }
+  }
+
+  @media (max-width: 600px) {
+    .hist-form { grid-template-columns: 1fr 1fr; }
+    .hist-item {
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        "date e1rm"
+        "detail actions";
+      gap: 8px 14px;
+    }
+    .hist-item .h-date { grid-area: date; }
+    .hist-item .h-detail { grid-area: detail; }
+    .hist-item .h-e1rm { grid-area: e1rm; text-align: right; }
+    .hist-item .h-actions { grid-area: actions; justify-content: flex-end; }
   }
 
   @media (max-width: 560px) {
@@ -807,13 +963,77 @@
     <div class="tab-panel" id="tab-history">
       <div class="header">
         <h1>HISTORIA <span>WYNIKÓW</span></h1>
-        <p>Śledzenie postępów w czasie</p>
+        <p>Progres 1RM w czasie</p>
       </div>
 
-      <div class="placeholder-chart">
-        <div class="big-icon">📈</div>
-        <div class="ph-title">WYKRES WKRÓTCE</div>
-        <div class="ph-sub">Tutaj pojawi się duży wykres Twoich wyników. Rozwiniemy tę sekcję w kolejnym kroku.</div>
+      <!-- ===== PRZYSIAD ===== -->
+      <div class="card">
+        <div class="card-title">
+          <div class="icon">🦵</div>
+          PRZYSIAD — PROGRES 1RM
+        </div>
+        <div class="chart-wrap">
+          <canvas id="chart-sq"></canvas>
+          <div class="chart-empty" id="empty-sq">Brak danych — dodaj pierwszy wynik poniżej.</div>
+        </div>
+      </div>
+
+      <div class="card blue-accent">
+        <div class="card-title">
+          <div class="icon blue">➕</div>
+          DODAJ WYNIK — PRZYSIAD
+        </div>
+
+        <div class="hist-form">
+          <div class="input-group">
+            <label>Data</label>
+            <input type="date" id="hist-sq-date" min="2021-01-01" max="2030-12-31">
+          </div>
+          <div class="input-group">
+            <label>Ciężar</label>
+            <input type="number" id="hist-sq-wt" placeholder="kg" step="0.5" oninput="updateHistPreview('sq')">
+          </div>
+          <div class="input-group">
+            <label>Powt.</label>
+            <select id="hist-sq-reps" onchange="updateHistPreview('sq')">
+              <option value="1">1</option><option value="2">2</option>
+              <option value="3" selected>3</option><option value="4">4</option>
+              <option value="5">5</option><option value="6">6</option>
+              <option value="7">7</option><option value="8">8</option>
+              <option value="9">9</option><option value="10">10</option>
+              <option value="11">11</option><option value="12">12</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>RIR</label>
+            <select id="hist-sq-rir" onchange="updateHistPreview('sq')">
+              <option value="0" selected>0</option><option value="0.5">0.5</option>
+              <option value="1">1</option><option value="1.5">1.5</option>
+              <option value="2">2</option><option value="2.5">2.5</option>
+              <option value="3">3</option><option value="3.5">3.5</option>
+              <option value="4">4</option><option value="5">5</option>
+              <option value="6">6</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="hist-preview">
+          <span>Szacowany 1RM z tej serii</span>
+          <strong id="hist-sq-preview">—</strong>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-primary" id="hist-sq-submit" onclick="submitEntry('sq')">Dodaj wynik</button>
+          <button class="btn-ghost" id="hist-sq-cancel" style="display:none" onclick="cancelEdit('sq')">Anuluj</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <div class="icon">📋</div>
+          ZAPISANE WYNIKI — PRZYSIAD
+        </div>
+        <div class="hist-list" id="hist-sq-list"></div>
       </div>
     </div><!-- /tab-history -->
 
@@ -822,6 +1042,7 @@
 
 </div><!-- /app -->
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
 // ========== NAWIGACJA / ZAKŁADKI ==========
 function setTab(tab) {
@@ -830,6 +1051,8 @@ function setTab(tab) {
   document.querySelectorAll('.nav-item').forEach(b => {
     b.classList.toggle('active', b.dataset.tab === tab);
   });
+  // Chart.js potrzebuje przeliczenia rozmiaru gdy panel staje się widoczny
+  if (tab === 'history') ACTIVE_LIFTS.forEach(l => { if (charts[l]) charts[l].resize(); });
 }
 
 let gender = 'M';
@@ -952,6 +1175,238 @@ function calculate() {
     document.getElementById('dots-val').textContent = '—';
   }
 }
+
+// ========================================================================
+//  HISTORIA WYNIKÓW
+// ========================================================================
+// Aktywne boje — aby dodać ławkę/martwy wystarczy dopisać 'bp','dl'
+// (oraz skopiować bloki HTML sekcji z id chart-bp / hist-bp-*).
+const ACTIVE_LIFTS = ['sq'];
+const LIFT_NAMES = { sq: 'Przysiad', bp: 'Ławka', dl: 'Martwy ciąg' };
+const STORAGE_KEY = 'kalkSBD_history_v1';
+
+let history = loadHistory();      // { sq:[...], bp:[...], dl:[...] }
+let charts = {};                  // instancje Chart.js per bój
+let editingId = { sq: null, bp: null, dl: null };
+
+function loadHistory() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const data = raw ? JSON.parse(raw) : {};
+    return { sq: data.sq || [], bp: data.bp || [], dl: data.dl || [] };
+  } catch (e) {
+    return { sq: [], bp: [], dl: [] };
+  }
+}
+
+function saveHistory() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+}
+
+function fmtDate(iso) {
+  // "2023-10-13" -> "13.10.2023"
+  const [y, m, d] = iso.split('-');
+  return `${d}.${m}.${y}`;
+}
+
+// Podgląd 1RM na żywo w formularzu
+function updateHistPreview(lift) {
+  const wt = parseFloat(document.getElementById(`hist-${lift}-wt`).value) || 0;
+  const reps = parseInt(document.getElementById(`hist-${lift}-reps`).value);
+  const rir = parseFloat(document.getElementById(`hist-${lift}-rir`).value);
+  const el = document.getElementById(`hist-${lift}-preview`);
+  if (wt > 0) {
+    const e1rm = getE1RM(wt, reps, rir);
+    el.textContent = e1rm ? `${e1rm} kg` : '—';
+  } else {
+    el.textContent = '—';
+  }
+}
+
+// Dodaj lub zapisz (gdy edytujemy) wynik
+function submitEntry(lift) {
+  const date = document.getElementById(`hist-${lift}-date`).value;
+  const wt = parseFloat(document.getElementById(`hist-${lift}-wt`).value) || 0;
+  const reps = parseInt(document.getElementById(`hist-${lift}-reps`).value);
+  const rir = parseFloat(document.getElementById(`hist-${lift}-rir`).value);
+
+  if (!date) { alert('Wybierz datę.'); return; }
+  if (wt <= 0) { alert('Podaj ciężar.'); return; }
+  const e1rm = getE1RM(wt, reps, rir);
+  if (!e1rm) { alert('Nie można policzyć 1RM dla tych wartości.'); return; }
+
+  if (editingId[lift]) {
+    const entry = history[lift].find(e => e.id === editingId[lift]);
+    if (entry) Object.assign(entry, { date, weight: wt, reps, rir, e1rm });
+    cancelEdit(lift);
+  } else {
+    history[lift].push({
+      id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+      date, weight: wt, reps, rir, e1rm
+    });
+  }
+
+  saveHistory();
+  resetForm(lift);
+  renderLift(lift);
+}
+
+function resetForm(lift) {
+  document.getElementById(`hist-${lift}-wt`).value = '';
+  document.getElementById(`hist-${lift}-reps`).value = '3';
+  document.getElementById(`hist-${lift}-rir`).value = '0';
+  updateHistPreview(lift);
+}
+
+function startEdit(lift, id) {
+  const entry = history[lift].find(e => e.id === id);
+  if (!entry) return;
+  editingId[lift] = id;
+  document.getElementById(`hist-${lift}-date`).value = entry.date;
+  document.getElementById(`hist-${lift}-wt`).value = entry.weight;
+  document.getElementById(`hist-${lift}-reps`).value = entry.reps;
+  document.getElementById(`hist-${lift}-rir`).value = entry.rir;
+  updateHistPreview(lift);
+  document.getElementById(`hist-${lift}-submit`).textContent = 'Zapisz zmiany';
+  document.getElementById(`hist-${lift}-cancel`).style.display = 'block';
+  renderList(lift);
+  document.getElementById(`hist-${lift}-date`).scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function cancelEdit(lift) {
+  editingId[lift] = null;
+  document.getElementById(`hist-${lift}-submit`).textContent = 'Dodaj wynik';
+  document.getElementById(`hist-${lift}-cancel`).style.display = 'none';
+  resetForm(lift);
+  renderList(lift);
+}
+
+function deleteEntry(lift, id) {
+  if (!confirm('Usunąć ten wynik?')) return;
+  history[lift] = history[lift].filter(e => e.id !== id);
+  if (editingId[lift] === id) cancelEdit(lift);
+  saveHistory();
+  renderLift(lift);
+}
+
+function sortedEntries(lift) {
+  return [...history[lift]].sort((a, b) => a.date.localeCompare(b.date));
+}
+
+function renderList(lift) {
+  const container = document.getElementById(`hist-${lift}-list`);
+  const entries = [...history[lift]].sort((a, b) => b.date.localeCompare(a.date)); // najnowsze u góry
+  if (entries.length === 0) {
+    container.innerHTML = '<div class="hist-empty">Brak zapisanych wyników.</div>';
+    return;
+  }
+  container.innerHTML = entries.map(e => `
+    <div class="hist-item ${editingId[lift] === e.id ? 'editing' : ''}">
+      <div class="h-date">${fmtDate(e.date)}</div>
+      <div class="h-detail">${e.weight} kg × ${e.reps} @ RIR ${e.rir}</div>
+      <div class="h-e1rm">${e.e1rm} kg</div>
+      <div class="h-actions">
+        <button class="icon-btn" title="Edytuj" onclick="startEdit('${lift}','${e.id}')">✏️</button>
+        <button class="icon-btn danger" title="Usuń" onclick="deleteEntry('${lift}','${e.id}')">🗑️</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderChart(lift) {
+  const entries = sortedEntries(lift);
+  const canvas = document.getElementById(`chart-${lift}`);
+  const emptyEl = document.getElementById(`empty-${lift}`);
+  if (!canvas) return;
+
+  if (entries.length === 0) {
+    if (emptyEl) emptyEl.style.display = 'flex';
+    canvas.style.display = 'none';
+    if (charts[lift]) { charts[lift].destroy(); charts[lift] = null; }
+    return;
+  }
+  if (emptyEl) emptyEl.style.display = 'none';
+  canvas.style.display = 'block';
+
+  const labels = entries.map(e => fmtDate(e.date));
+  const data = entries.map(e => e.e1rm);
+
+  if (charts[lift]) {
+    charts[lift].data.labels = labels;
+    charts[lift].data.datasets[0].data = data;
+    charts[lift].update();
+    return;
+  }
+
+  charts[lift] = new Chart(canvas.getContext('2d'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: LIFT_NAMES[lift] + ' — 1RM (kg)',
+        data,
+        borderColor: '#e63946',
+        backgroundColor: 'rgba(230,57,70,0.12)',
+        borderWidth: 3,
+        pointBackgroundColor: '#e63946',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        tension: 0.25,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { labels: { color: '#e8e8f0', font: { size: 13 } } },
+        tooltip: {
+          backgroundColor: '#1a1a24',
+          borderColor: '#2a2a3a',
+          borderWidth: 1,
+          titleColor: '#e8e8f0',
+          bodyColor: '#2ecc71',
+          callbacks: {
+            label: (ctx) => {
+              const e = entries[ctx.dataIndex];
+              return [`1RM: ${e.e1rm} kg`, `Seria: ${e.weight} kg × ${e.reps} @ RIR ${e.rir}`];
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(42,42,58,0.6)' },
+          ticks: { color: '#8888a0' }
+        },
+        y: {
+          grid: { color: 'rgba(42,42,58,0.6)' },
+          ticks: { color: '#8888a0', callback: (v) => v + ' kg' }
+        }
+      }
+    }
+  });
+}
+
+function renderLift(lift) {
+  renderList(lift);
+  renderChart(lift);
+}
+
+// Inicjalizacja po załadowaniu strony
+window.addEventListener('DOMContentLoaded', () => {
+  // domyślna data = dzisiaj
+  const today = new Date().toISOString().slice(0, 10);
+  ACTIVE_LIFTS.forEach(lift => {
+    const dateEl = document.getElementById(`hist-${lift}-date`);
+    if (dateEl && !dateEl.value) dateEl.value = today;
+    updateHistPreview(lift);
+    renderLift(lift);
+  });
+});
 </script>
 
 </body>
