@@ -405,10 +405,13 @@
   /* ===== BAZA TRENINGÓW ===== */
   .data-toolbar {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
     gap: 16px;
     margin-bottom: 18px;
   }
+  .data-toolbar .input-group:first-child { grid-column: span 2; }
+  .data-toolbar .range-pair { display: flex; gap: 6px; }
+  .data-toolbar .range-pair input { min-width: 0; flex: 1; }
 
   .data-actions {
     display: flex;
@@ -588,6 +591,7 @@
 
   @media (max-width: 600px) {
     .data-toolbar { grid-template-columns: 1fr; }
+    .data-toolbar .input-group:first-child { grid-column: auto; }
     .editor-grid { grid-template-columns: 1fr 1fr; }
   }
 
@@ -1396,9 +1400,56 @@
               <option value="manual">Ręczne</option>
             </select>
           </div>
+          <div class="input-group">
+            <label>Wariant</label>
+            <select id="data-filter-variant" onchange="renderData()">
+              <option value="">Wszystkie</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Kolana</label>
+            <select id="data-filter-knee" onchange="renderData()">
+              <option value="">Wszystkie</option>
+              <option value="Gołe kolano">Gołe kolano</option>
+              <option value="SBD">SBD</option>
+              <option value="Twardy">Twardy</option>
+              <option value="Taśma">Taśma</option>
+              <option value="__none">Nie wpisane</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>RIR / RPE</label>
+            <select id="data-filter-effort" onchange="renderData()">
+              <option value="">Wszystkie</option>
+              <option value="yes">Wpisane</option>
+              <option value="no">Brak</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Data od – do</label>
+            <div class="range-pair">
+              <input type="date" id="data-filter-from" min="2021-01-01" max="2030-12-31" onchange="renderData()">
+              <input type="date" id="data-filter-to" min="2021-01-01" max="2030-12-31" onchange="renderData()">
+            </div>
+          </div>
+          <div class="input-group">
+            <label>Ciężar od – do (kg)</label>
+            <div class="range-pair">
+              <input type="number" id="data-filter-wmin" placeholder="od" min="0" step="2.5" oninput="renderData()">
+              <input type="number" id="data-filter-wmax" placeholder="do" min="0" step="2.5" oninput="renderData()">
+            </div>
+          </div>
+          <div class="input-group">
+            <label>Powt. od – do</label>
+            <div class="range-pair">
+              <input type="number" id="data-filter-rmin" placeholder="od" min="0" step="1" oninput="renderData()">
+              <input type="number" id="data-filter-rmax" placeholder="do" min="0" step="1" oninput="renderData()">
+            </div>
+          </div>
         </div>
         <div class="data-actions">
           <button class="btn-primary" onclick="openEditor()">+ Dodaj serię</button>
+          <button class="btn-ghost" onclick="clearDataFilters()">✕ Wyczyść filtry</button>
           <button class="btn-ghost" onclick="reloadFromRepo()">↻ Przywróć z repozytorium</button>
           <button class="btn-primary" id="btn-save-repo" onclick="saveToRepo()">☁ Zapisz do repo</button>
           <button class="btn-ghost" onclick="resetGhToken()" title="Zmień / usuń zapisany token GitHuba">🔑</button>
@@ -2081,14 +2132,59 @@ function populateLiftSelects() {
   editor.innerHTML = opts;
 }
 
+// Lista wariantów w filtrze budowana z danych (najczęstsze na górze),
+// zachowuje aktualny wybór po odświeżeniu.
+function populateVariantFilter() {
+  const sel = document.getElementById('data-filter-variant');
+  const cur = sel.value;
+  const counts = {};
+  dataSets.forEach(r => { const v = r.variant || ''; if (v) counts[v] = (counts[v] || 0) + 1; });
+  const variants = Object.keys(counts).sort((a, b) => counts[b] - counts[a] || a.localeCompare(b, 'pl'));
+  sel.innerHTML = '<option value="">Wszystkie</option>' +
+    variants.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)} (${counts[v]})</option>`).join('');
+  if (cur && counts[cur]) sel.value = cur;
+}
+
+function clearDataFilters() {
+  ['data-search', 'data-filter-lift', 'data-filter-source', 'data-filter-variant',
+   'data-filter-knee', 'data-filter-effort', 'data-filter-from', 'data-filter-to',
+   'data-filter-wmin', 'data-filter-wmax', 'data-filter-rmin', 'data-filter-rmax']
+    .forEach(id => { document.getElementById(id).value = ''; });
+  renderData();
+}
+
+function numOrNull(id) {
+  const v = document.getElementById(id).value;
+  return v === '' ? null : parseFloat(v);
+}
+
 function getFiltered() {
   const q = document.getElementById('data-search').value.trim().toLowerCase();
   const fl = document.getElementById('data-filter-lift').value;
   const fs = document.getElementById('data-filter-source').value;
+  const fv = document.getElementById('data-filter-variant').value;
+  const fk = document.getElementById('data-filter-knee').value;
+  const fe = document.getElementById('data-filter-effort').value;
+  const from = document.getElementById('data-filter-from').value;
+  const to = document.getElementById('data-filter-to').value;
+  const wmin = numOrNull('data-filter-wmin'), wmax = numOrNull('data-filter-wmax');
+  const rmin = numOrNull('data-filter-rmin'), rmax = numOrNull('data-filter-rmax');
 
   let rows = dataSets.filter(r => {
     if (fl && r.lift !== fl) return false;
     if (fs && r.source !== fs) return false;
+    if (fv && r.variant !== fv) return false;
+    if (fk === '__none' ? !!r.knee : (fk && r.knee !== fk)) return false;
+    if (fe) {
+      const has = effortValue(r) !== null;
+      if ((fe === 'yes') !== has) return false;
+    }
+    if (from && (!r.date || r.date < from)) return false;
+    if (to && (!r.date || r.date > to)) return false;
+    if (wmin !== null && !(r.weight_kg >= wmin)) return false;
+    if (wmax !== null && !(r.weight_kg <= wmax)) return false;
+    if (rmin !== null && !(r.reps !== null && r.reps >= rmin)) return false;
+    if (rmax !== null && !(r.reps !== null && r.reps <= rmax)) return false;
     if (q) {
       const hay = [r.variant, r.note, r.session, LIFT_LABELS[r.lift]]
         .filter(Boolean).join(' ').toLowerCase();
@@ -2120,6 +2216,7 @@ function getFiltered() {
 function renderData() {
   const tbody = document.getElementById('data-tbody');
   const empty = document.getElementById('data-empty');
+  populateVariantFilter();
   const rows = getFiltered();
 
   document.getElementById('data-count').textContent =
