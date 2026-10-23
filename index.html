@@ -1400,6 +1400,8 @@
         <div class="data-actions">
           <button class="btn-primary" onclick="openEditor()">+ Dodaj serię</button>
           <button class="btn-ghost" onclick="reloadFromRepo()">↻ Przywróć z repozytorium</button>
+          <button class="btn-primary" id="btn-save-repo" onclick="saveToRepo()">☁ Zapisz do repo</button>
+          <button class="btn-ghost" onclick="resetGhToken()" title="Zmień / usuń zapisany token GitHuba">🔑</button>
           <div class="effort-toggle">
             <span class="et-label">Intensywność:</span>
             <button class="et-btn active" id="et-rir" onclick="setEffortMode('rir')">RIR</button>
@@ -1990,6 +1992,84 @@ function reloadFromRepo() {
   if (!confirm('Przywrócić dane z repozytorium? Lokalne zmiany zostaną nadpisane.')) return;
   localStorage.removeItem(SETS_KEY);
   fetchSetsFromRepo();
+}
+
+// ---------- Zapis do repo przez GitHub REST API ----------
+// Token (fine-grained, Contents: Read and write tylko dla tego repo) trzymany
+// wyłącznie w localStorage przeglądarki właściciela — nigdy w kodzie.
+const GH_REPO = 'rusekdawid/KalkulatorSBD';
+const GH_BRANCH = 'main';
+const GH_TOKEN_KEY = 'kalkSBD_gh_token';
+
+function getGhToken() {
+  let t = localStorage.getItem(GH_TOKEN_KEY);
+  if (!t) {
+    t = (prompt('Wklej token GitHuba (fine-grained, uprawnienie Contents: Read and write dla repo KalkulatorSBD).\nZostanie zapamiętany tylko w tej przeglądarce.') || '').trim();
+    if (t) localStorage.setItem(GH_TOKEN_KEY, t);
+  }
+  return t;
+}
+
+function resetGhToken() {
+  if (!confirm('Usunąć zapamiętany token GitHuba z tej przeglądarki?')) return;
+  localStorage.removeItem(GH_TOKEN_KEY);
+  alert('Token usunięty. Przy następnym zapisie strona poprosi o nowy.');
+}
+
+function toBase64Utf8(str) {
+  const bytes = new TextEncoder().encode(str);
+  let bin = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) {
+    bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  }
+  return btoa(bin);
+}
+
+async function ghPutFile(token, path, content, message) {
+  const url = `https://api.github.com/repos/${GH_REPO}/contents/${path}`;
+  const headers = {
+    'Authorization': 'Bearer ' + token,
+    'Accept': 'application/vnd.github+json'
+  };
+  // aktualny sha pliku (brak pliku = 404 = tworzymy nowy)
+  let sha;
+  const cur = await fetch(`${url}?ref=${GH_BRANCH}`, { headers, cache: 'no-store' });
+  if (cur.ok) sha = (await cur.json()).sha;
+  else if (cur.status !== 404) throw { status: cur.status, path };
+
+  const resp = await fetch(url, {
+    method: 'PUT', headers,
+    body: JSON.stringify({ message, content: toBase64Utf8(content), branch: GH_BRANCH, sha })
+  });
+  if (!resp.ok) throw { status: resp.status, path };
+}
+
+async function saveToRepo() {
+  const token = getGhToken();
+  if (!token) return;
+  const btn = document.getElementById('btn-save-repo');
+  btn.disabled = true;
+  btn.textContent = '⏳ Zapisywanie…';
+  try {
+    const sorted = [...dataSets].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    await ghPutFile(token, 'data/sets.json',
+      JSON.stringify(sorted, null, 2) + '\n',
+      'Baza treningow: zapis ze strony');
+    await ghPutFile(token, 'data/history_v1.json',
+      JSON.stringify(history, null, 2) + '\n',
+      'Historia 1.0: zapis ze strony');
+    alert('Zapisano do repozytorium ✅\nNowa wersja pojawi się na stronie po ok. 1 minucie.');
+  } catch (e) {
+    if (e && (e.status === 401 || e.status === 403)) {
+      localStorage.removeItem(GH_TOKEN_KEY);
+      alert(`Brak dostępu (HTTP ${e.status}). Token jest nieprawidłowy albo nie ma uprawnienia Contents: Read and write — został usunięty, spróbuj ponownie z nowym.`);
+    } else {
+      alert('Nie udało się zapisać do repo: ' + (e && e.status ? `HTTP ${e.status} (${e.path})` : (e && e.message) || e));
+    }
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '☁ Zapisz do repo';
+  }
 }
 
 function populateLiftSelects() {
