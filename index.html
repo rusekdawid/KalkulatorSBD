@@ -352,7 +352,41 @@
     letter-spacing: 1px;
   }
 
-  .table-scroll { overflow-x: auto; max-height: 72vh; overflow-y: auto; }
+  .effort-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .effort-toggle .et-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+  }
+  .et-btn {
+    padding: 8px 16px;
+    background: var(--input-bg);
+    border: 2px solid var(--border);
+    border-radius: 7px;
+    color: var(--text-dim);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .et-btn:hover { border-color: var(--accent); color: var(--text); }
+  .et-btn.active {
+    border-color: var(--accent);
+    background: rgba(230,57,70,0.1);
+    color: var(--accent);
+  }
+
+  /* zakładka Baza treningów rozciąga się na całą szerokość */
+  .container.wide { max-width: 1280px; }
+
+  .table-scroll { overflow-x: auto; }
 
   .data-table {
     width: 100%;
@@ -1227,6 +1261,11 @@
         <div class="data-actions">
           <button class="btn-primary" onclick="openEditor()">+ Dodaj serię</button>
           <button class="btn-ghost" onclick="reloadFromRepo()">↻ Przywróć z repozytorium</button>
+          <div class="effort-toggle">
+            <span class="et-label">Intensywność:</span>
+            <button class="et-btn active" id="et-rir" onclick="setEffortMode('rir')">RIR</button>
+            <button class="et-btn" id="et-rpe" onclick="setEffortMode('rpe')">RPE</button>
+          </div>
           <span class="data-count" id="data-count">—</span>
         </div>
       </div>
@@ -1240,11 +1279,10 @@
                 <th data-sort="date">Data</th>
                 <th data-sort="lift">Bój</th>
                 <th data-sort="variant">Wariant</th>
+                <th data-sort="knee">Kolana</th>
                 <th data-sort="weight_kg" class="num">Ciężar</th>
                 <th data-sort="reps" class="num">Powt.</th>
-                <th data-sort="sets" class="num">Serie</th>
-                <th data-sort="rir" class="num">RIR</th>
-                <th data-sort="rpe" class="num">RPE</th>
+                <th data-sort="effort" class="num" id="th-effort">RIR</th>
                 <th data-sort="e1rm" class="num">e1RM</th>
                 <th data-sort="note">Notatka</th>
                 <th>Akcje</th>
@@ -1280,7 +1318,17 @@
             </div>
             <div class="input-group">
               <label>Wariant</label>
-              <input type="text" id="ed-variant" placeholder="Klasyczny, Pauzowany...">
+              <input type="text" id="ed-variant" placeholder="Competition, Pauzowany...">
+            </div>
+            <div class="input-group">
+              <label>Kolana</label>
+              <select id="ed-knee">
+                <option value="">—</option>
+                <option value="Gołe kolano">Gołe kolano</option>
+                <option value="SBD">SBD</option>
+                <option value="Twardy">Twardy</option>
+                <option value="Taśma">Taśma</option>
+              </select>
             </div>
             <div class="input-group">
               <label>Ciężar (kg)</label>
@@ -1291,16 +1339,8 @@
               <input type="number" id="ed-reps" step="1" min="0" placeholder="puste = brak" oninput="updateEditorE1RM()">
             </div>
             <div class="input-group">
-              <label>Serie</label>
-              <input type="number" id="ed-sets" step="1" min="1" value="1">
-            </div>
-            <div class="input-group">
-              <label>RIR</label>
-              <input type="number" id="ed-rir" step="0.5" min="0" placeholder="puste = brak">
-            </div>
-            <div class="input-group">
-              <label>RPE</label>
-              <input type="number" id="ed-rpe" step="0.5" min="1" max="10" placeholder="puste = brak">
+              <label id="ed-effort-label">RIR</label>
+              <input type="number" id="ed-effort" step="0.5" min="0" max="10" placeholder="puste = brak">
             </div>
             <div class="input-group">
               <label>e1RM (auto)</label>
@@ -1334,6 +1374,8 @@ function setTab(tab) {
   document.querySelectorAll('.nav-item').forEach(b => {
     b.classList.toggle('active', b.dataset.tab === tab);
   });
+  // Baza treningów na całą szerokość, pozostałe zakładki węższe
+  document.querySelector('.container').classList.toggle('wide', tab === 'data');
   // Chart.js potrzebuje przeliczenia rozmiaru gdy panel staje się widoczny
   if (tab === 'history') ACTIVE_LIFTS.forEach(l => { if (charts[l]) charts[l].resize(); });
 }
@@ -1703,11 +1745,40 @@ let LIFT_LABELS = {
 let dataSets = [];
 let dataSort = { key: 'date', dir: 'desc' };
 let editingSetId = null;
+let effortMode = 'rir';   // 'rir' albo 'rpe' (RPE = 10 - RIR)
 
 // e1RM wg README dla tych danych: Epley, tylko gdy reps > 0
 function epley(weight, reps) {
   if (!weight || !reps || reps <= 0) return null;
   return Math.round(weight * (1 + reps / 30) * 10) / 10;
+}
+
+// RIR i RPE to to samo: RPE = 10 - RIR. Zwraca wartość w aktualnym trybie.
+function effortValue(r, mode) {
+  const m = mode || effortMode;
+  if (m === 'rir') {
+    if (r.rir !== null && r.rir !== undefined) return r.rir;
+    if (r.rpe !== null && r.rpe !== undefined) return 10 - r.rpe;
+  } else {
+    if (r.rpe !== null && r.rpe !== undefined) return r.rpe;
+    if (r.rir !== null && r.rir !== undefined) return 10 - r.rir;
+  }
+  return null;
+}
+
+function setEffortMode(mode) {
+  effortMode = mode;
+  document.getElementById('et-rir').classList.toggle('active', mode === 'rir');
+  document.getElementById('et-rpe').classList.toggle('active', mode === 'rpe');
+  const lbl = document.getElementById('ed-effort-label');
+  if (lbl) lbl.textContent = mode.toUpperCase();
+  renderData();
+}
+
+// Starsze dane z localStorage: "Klasyczny" -> "Competition"
+function normalizeSets(arr) {
+  arr.forEach(r => { if (r.variant === 'Klasyczny') r.variant = 'Competition'; });
+  return arr;
 }
 
 function liftClass(lift) {
@@ -1732,7 +1803,7 @@ async function initDataTab() {
   // dane: najpierw localStorage, inaczej z repo
   const stored = localStorage.getItem(SETS_KEY);
   if (stored) {
-    try { dataSets = JSON.parse(stored); } catch (e) { dataSets = []; }
+    try { dataSets = normalizeSets(JSON.parse(stored)); } catch (e) { dataSets = []; }
     renderData();
   } else {
     await fetchSetsFromRepo();
@@ -1760,7 +1831,7 @@ async function fetchSetsFromRepo() {
   try {
     const resp = await fetch('data/sets.json', { cache: 'no-store' });
     if (!resp.ok) throw new Error('HTTP ' + resp.status);
-    dataSets = await resp.json();
+    dataSets = normalizeSets(await resp.json());
     saveSets();
     renderData();
   } catch (e) {
@@ -1809,6 +1880,7 @@ function getFiltered() {
   rows.sort((a, b) => {
     let va, vb;
     if (key === 'e1rm') { va = epley(a.weight_kg, a.reps); vb = epley(b.weight_kg, b.reps); }
+    else if (key === 'effort') { va = effortValue(a); vb = effortValue(b); }
     else if (key === 'lift') { va = LIFT_LABELS[a.lift] || a.lift; vb = LIFT_LABELS[b.lift] || b.lift; }
     else { va = a[key]; vb = b[key]; }
     // null/undefined zawsze na koniec
@@ -1833,8 +1905,13 @@ function renderData() {
 
   // strzałki sortowania w nagłówkach
   document.querySelectorAll('#data-table thead th[data-sort]').forEach(th => {
-    const base = th.dataset.sortLabel || th.textContent.replace(/[▲▼].*$/, '').trim();
-    th.dataset.sortLabel = base;
+    let base;
+    if (th.id === 'th-effort') {
+      base = effortMode.toUpperCase();          // RIR albo RPE wg trybu
+    } else {
+      base = th.dataset.sortLabel || th.textContent.replace(/\s*[▲▼].*$/, '').trim();
+      th.dataset.sortLabel = base;
+    }
     th.innerHTML = base + (dataSort.key === th.dataset.sort
       ? ` <span class="arrow">${dataSort.dir === 'asc' ? '▲' : '▼'}</span>` : '');
   });
@@ -1849,18 +1926,18 @@ function renderData() {
 
   tbody.innerHTML = rows.map(r => {
     const e = epley(r.weight_kg, r.reps);
-    const variantCls = r.variant === 'Klasyczny' ? 'variant-classic' : '';
+    const variantCls = r.variant === 'Competition' ? 'variant-classic' : '';
     const reps = (r.reps === null || r.reps === undefined) ? '—' : (r.reps === 0 ? '✗' : r.reps);
+    const eff = effortValue(r);
     return `
       <tr>
         <td class="muted">${fmtDate(r.date)}</td>
         <td><span class="lift-badge ${liftClass(r.lift)}">${LIFT_LABELS[r.lift] || r.lift}</span></td>
         <td class="${variantCls}">${r.variant || '—'}</td>
+        <td class="muted">${r.knee ? escapeHtml(r.knee) : '—'}</td>
         <td class="num">${r.weight_kg ?? '—'}</td>
         <td class="num">${reps}</td>
-        <td class="num muted">${r.sets ?? 1}</td>
-        <td class="num">${r.rir ?? '—'}</td>
-        <td class="num">${r.rpe ?? '—'}</td>
+        <td class="num">${eff ?? '—'}</td>
         <td class="num e1rm">${e ?? '—'}</td>
         <td class="note-cell">${r.note ? escapeHtml(r.note) : ''}</td>
         <td>
@@ -1892,12 +1969,13 @@ function openEditor(id) {
   document.getElementById('ed-date').value = r ? r.date : new Date().toISOString().slice(0, 10);
   document.getElementById('ed-session').value = r ? (r.session || '') : '';
   document.getElementById('ed-lift').value = r ? r.lift : 'squat';
-  document.getElementById('ed-variant').value = r ? (r.variant || '') : 'Klasyczny';
+  document.getElementById('ed-variant').value = r ? (r.variant || '') : 'Competition';
+  document.getElementById('ed-knee').value = r ? (r.knee || '') : '';
   document.getElementById('ed-weight').value = r ? (r.weight_kg ?? '') : '';
   document.getElementById('ed-reps').value = (r && r.reps !== null && r.reps !== undefined) ? r.reps : '';
-  document.getElementById('ed-sets').value = r ? (r.sets ?? 1) : 1;
-  document.getElementById('ed-rir').value = (r && r.rir !== null && r.rir !== undefined) ? r.rir : '';
-  document.getElementById('ed-rpe').value = (r && r.rpe !== null && r.rpe !== undefined) ? r.rpe : '';
+  document.getElementById('ed-effort-label').textContent = effortMode.toUpperCase();
+  const effVal = r ? effortValue(r, effortMode) : null;
+  document.getElementById('ed-effort').value = (effVal === null || effVal === undefined) ? '' : effVal;
   document.getElementById('ed-note').value = r ? (r.note || '') : '';
   updateEditorE1RM();
 
@@ -1928,19 +2006,27 @@ function saveEditor() {
   if (!(weight > 0)) { alert('Podaj ciężar.'); return; }
 
   const repsRaw = document.getElementById('ed-reps').value.trim();
-  const rirRaw = document.getElementById('ed-rir').value.trim();
-  const rpeRaw = document.getElementById('ed-rpe').value.trim();
+  const effRaw = document.getElementById('ed-effort').value.trim();
+
+  // jedna wartość intensywności -> zapisujemy spójnie RIR i RPE (RPE = 10 - RIR)
+  let rir = null, rpe = null;
+  if (effRaw !== '') {
+    const v = parseFloat(effRaw);
+    if (!isNaN(v)) {
+      if (effortMode === 'rir') { rir = v; rpe = 10 - v; }
+      else { rpe = v; rir = 10 - v; }
+    }
+  }
 
   const fields = {
     date,
     session: document.getElementById('ed-session').value.trim() || null,
     lift: document.getElementById('ed-lift').value,
-    variant: document.getElementById('ed-variant').value.trim() || 'Klasyczny',
+    variant: document.getElementById('ed-variant').value.trim() || 'Competition',
+    knee: document.getElementById('ed-knee').value || null,
     weight_kg: weight,
     reps: repsRaw === '' ? null : parseInt(repsRaw),
-    sets: parseInt(document.getElementById('ed-sets').value) || 1,
-    rir: rirRaw === '' ? null : parseFloat(rirRaw),
-    rpe: rpeRaw === '' ? null : parseFloat(rpeRaw),
+    rir, rpe,
     note: document.getElementById('ed-note').value.trim() || null
   };
 
