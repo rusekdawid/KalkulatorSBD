@@ -43,6 +43,115 @@
     z-index: 0;
   }
 
+  .app {
+    display: flex;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar {
+    width: 260px;
+    flex-shrink: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 28px 18px;
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 6px;
+  }
+
+  .sidebar-brand .logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: 0 0 20px var(--accent-glow);
+  }
+
+  .sidebar-brand .brand-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+    line-height: 1;
+    color: var(--text);
+  }
+
+  .sidebar-brand .brand-text span { color: var(--accent); }
+
+  .nav {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .nav-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    padding: 0 12px 6px;
+    font-weight: 600;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 13px 14px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    color: var(--text-dim);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    letter-spacing: 0.5px;
+  }
+
+  .nav-item .nav-icon {
+    width: 22px;
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  .nav-item:hover {
+    background: var(--surface2);
+    color: var(--text);
+  }
+
+  .nav-item.active {
+    background: rgba(230, 57, 70, 0.1);
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 20px var(--accent-glow);
+  }
+
+  .main {
+    flex: 1;
+    min-width: 0;
+  }
+
   .container {
     max-width: 720px;
     margin: 0 auto;
@@ -50,6 +159,34 @@
     position: relative;
     z-index: 1;
   }
+
+  /* ===== TAB PANELS ===== */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .placeholder-chart {
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    min-height: 360px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: var(--text-dim);
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .placeholder-chart .big-icon { font-size: 2.6rem; opacity: 0.6; }
+  .placeholder-chart .ph-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+    color: var(--text);
+  }
+  .placeholder-chart .ph-sub { font-size: 0.82rem; max-width: 340px; line-height: 1.6; }
 
   .header {
     text-align: center;
@@ -343,6 +480,31 @@
     line-height: 1.8;
   }
 
+  @media (max-width: 860px) {
+    .app { flex-direction: column; }
+    .sidebar {
+      width: 100%;
+      height: auto;
+      position: static;
+      flex-direction: row;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 16px;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+    }
+    .sidebar-brand { flex-shrink: 0; }
+    .sidebar-brand .brand-text { font-size: 1.2rem; }
+    .nav {
+      flex-direction: row;
+      gap: 8px;
+    }
+    .nav-label { display: none; }
+    .nav-item { padding: 10px 14px; white-space: nowrap; }
+    .container { padding: 28px 16px 48px; }
+  }
+
   @media (max-width: 560px) {
     .header h1 { font-size: 2.4rem; }
     .card { padding: 24px 16px; }
@@ -377,7 +539,31 @@
 </head>
 <body>
 
-<div class="container">
+<div class="app">
+
+  <!-- ===== PANEL ZARZĄDZANIA ===== -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="logo">🏋️</div>
+      <div class="brand-text">KALKULATOR<br><span>SBD</span></div>
+    </div>
+    <nav class="nav">
+      <div class="nav-label">Menu</div>
+      <button class="nav-item active" data-tab="calc" onclick="setTab('calc')">
+        <span class="nav-icon">🧮</span> Kalkulator SBD
+      </button>
+      <button class="nav-item" data-tab="history" onclick="setTab('history')">
+        <span class="nav-icon">📈</span> Historia wyników
+      </button>
+    </nav>
+  </aside>
+
+  <!-- ===== TREŚĆ ===== -->
+  <main class="main">
+    <div class="container">
+
+    <!-- ===================== ZAKŁADKA: KALKULATOR SBD ===================== -->
+    <div class="tab-panel active" id="tab-calc">
   <div class="header">
     <h1>KALKULATOR <span>TRÓJBOJU</span></h1>
     <p>IPF GL &bull; DOTS &bull; Estymowany Total</p>
@@ -615,9 +801,37 @@
     IPF GL (2020, oficjalne współczynniki IPF Classic) &bull; DOTS (2020)<br>
     e1RM na podstawie tabeli RPE/RIR &bull; zaokrąglenie do 2.5 kg
   </div>
-</div>
+    </div><!-- /tab-calc -->
+
+    <!-- ===================== ZAKŁADKA: HISTORIA WYNIKÓW ===================== -->
+    <div class="tab-panel" id="tab-history">
+      <div class="header">
+        <h1>HISTORIA <span>WYNIKÓW</span></h1>
+        <p>Śledzenie postępów w czasie</p>
+      </div>
+
+      <div class="placeholder-chart">
+        <div class="big-icon">📈</div>
+        <div class="ph-title">WYKRES WKRÓTCE</div>
+        <div class="ph-sub">Tutaj pojawi się duży wykres Twoich wyników. Rozwiniemy tę sekcję w kolejnym kroku.</div>
+      </div>
+    </div><!-- /tab-history -->
+
+    </div><!-- /container -->
+  </main>
+
+</div><!-- /app -->
 
 <script>
+// ========== NAWIGACJA / ZAKŁADKI ==========
+function setTab(tab) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(b => {
+    b.classList.toggle('active', b.dataset.tab === tab);
+  });
+}
+
 let gender = 'M';
 
 function setGender(g) {
