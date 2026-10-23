@@ -206,6 +206,15 @@
     padding: 20px;
   }
 
+  .h2-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
   .charts-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1246,7 +1255,13 @@
     <div class="tab-panel" id="tab-history2">
       <div class="header">
         <h1>HISTORIA <span>2.0</span></h1>
-        <p>Progres 1RM z serii Competition &bull; e1RM = Epley (bez RPE)</p>
+        <p>Progres 1RM z serii Competition</p>
+      </div>
+
+      <div class="h2-toolbar">
+        <span class="et-label">Metoda 1RM:</span>
+        <button class="et-btn active" id="h2-epley" onclick="setH2Mode(false)">Bez RPE (Epley)</button>
+        <button class="et-btn" id="h2-rpe" onclick="setH2Mode(true)">Z RPE</button>
       </div>
 
       <div class="charts-grid">
@@ -2116,6 +2131,8 @@ function deleteSet(id) {
 //  e1RM liczony wzorem Epley, bez uwzględniania RPE/RIR.
 // ========================================================================
 let charts2 = {};
+let h2pts = {};              // metadane punktów per wykres (do tooltipów)
+let h2WithRPE = false;       // tryb: false = Epley, true = z RPE/RIR
 const H2_COLORS = {
   squat:    '#e63946',
   bench:    '#4a9eff',
@@ -2123,20 +2140,53 @@ const H2_COLORS = {
   total:    '#2ecc71'
 };
 
-function competitionPoints(lift) {
+function setH2Mode(withRPE) {
+  h2WithRPE = withRPE;
+  document.getElementById('h2-epley').classList.toggle('active', !withRPE);
+  document.getElementById('h2-rpe').classList.toggle('active', withRPE);
+  renderHistory2();
+}
+
+// 1RM dla pojedynczej serii wg trybu.
+// Tryb RPE: gdy jest RIR/RPE -> tabela RPE; gdy brak -> fallback Epley.
+function e1rmForPoint(r, withRPE) {
+  if (withRPE) {
+    let rir = null;
+    if (r.rir !== null && r.rir !== undefined) rir = r.rir;
+    else if (r.rpe !== null && r.rpe !== undefined) rir = 10 - r.rpe;
+    if (rir !== null) {
+      const v = getE1RM(r.weight_kg, r.reps, rir);
+      if (v) return { e1rm: v, method: 'rpe', rir };
+    }
+    const ep = epley(r.weight_kg, r.reps);
+    return ep ? { e1rm: ep, method: 'epley', rir: null } : null;
+  }
+  const ep = epley(r.weight_kg, r.reps);
+  return ep ? { e1rm: ep, method: 'epley', rir: null } : null;
+}
+
+function competitionPoints(lift, withRPE) {
   // serie Competition danego boju, reps>0 i ciężar>0, posortowane po dacie
   return dataSets
     .filter(r => r.variant === 'Competition' && r.lift === lift && r.reps > 0 && r.weight_kg > 0)
-    .map(r => ({ date: r.date, e1rm: epley(r.weight_kg, r.reps) }))
-    .filter(p => p.e1rm)
+    .map(r => {
+      const c = e1rmForPoint(r, withRPE);
+      if (!c) return null;
+      return {
+        date: r.date, e1rm: c.e1rm, method: c.method,
+        weight: r.weight_kg, reps: r.reps, rir: r.rir, rpe: r.rpe,
+        session: r.session, note: r.note
+      };
+    })
+    .filter(Boolean)
     .sort((a, b) => a.date.localeCompare(b.date));
 }
 
 // Total = suma bieżących rekordów (running max) 1RM trzech bojów.
 // Punkt pojawia się, gdy każdy z bojów ma już co najmniej jeden wynik.
-function totalPoints() {
+function totalPoints(withRPE) {
   const all = ['squat', 'bench', 'deadlift']
-    .flatMap(lift => competitionPoints(lift).map(p => ({ ...p, lift })))
+    .flatMap(lift => competitionPoints(lift, withRPE).map(p => ({ date: p.date, e1rm: p.e1rm, lift })))
     .sort((a, b) => a.date.localeCompare(b.date));
   const best = { squat: 0, bench: 0, deadlift: 0 };
   const out = [];
@@ -2144,9 +2194,9 @@ function totalPoints() {
     if (p.e1rm > best[p.lift]) best[p.lift] = p.e1rm;
     if (best.squat && best.bench && best.deadlift) {
       const total = Math.round((best.squat + best.bench + best.deadlift) * 10) / 10;
-      // nadpisz punkt dla tej samej daty, inaczej dodaj nowy
-      if (out.length && out[out.length - 1].date === p.date) out[out.length - 1].e1rm = total;
-      else out.push({ date: p.date, e1rm: total });
+      const rec = { date: p.date, e1rm: total, squat: best.squat, bench: best.bench, deadlift: best.deadlift };
+      if (out.length && out[out.length - 1].date === p.date) out[out.length - 1] = rec;
+      else out.push(rec);
     }
   }
   return out;
@@ -2156,6 +2206,8 @@ function drawH2Chart(key, points, label) {
   const canvas = document.getElementById(`chart2-${key}`);
   const emptyEl = document.getElementById(`empty2-${key}`);
   if (!canvas) return;
+
+  h2pts[key] = points;
 
   if (!points.length) {
     if (emptyEl) emptyEl.style.display = 'flex';
@@ -2208,7 +2260,11 @@ function drawH2Chart(key, points, label) {
           borderWidth: 1,
           titleColor: '#e8e8f0',
           bodyColor: color,
-          callbacks: { label: (ctx) => `${ctx.parsed.y} kg` }
+          padding: 12,
+          callbacks: {
+            title: (items) => items.length ? fmtDate(h2pts[key][items[0].dataIndex].date) : '',
+            label: (ctx) => h2TooltipLines(key, ctx.dataIndex)
+          }
         }
       },
       scales: {
@@ -2219,12 +2275,37 @@ function drawH2Chart(key, points, label) {
   });
 }
 
+// Treść tooltipa: 1RM + z jakiej serii policzono (lub rozbicie dla totalu)
+function h2TooltipLines(key, idx) {
+  const p = h2pts[key] && h2pts[key][idx];
+  if (!p) return '';
+  if (key === 'total') {
+    return [
+      `Total: ${p.e1rm} kg`,
+      `Przysiad: ${p.squat} kg`,
+      `Wyciskanie: ${p.bench} kg`,
+      `Martwy ciąg: ${p.deadlift} kg`
+    ];
+  }
+  const lines = [`1RM: ${p.e1rm} kg`];
+  let seria = `Seria: ${p.weight} kg × ${p.reps}`;
+  if (p.method === 'rpe') {
+    if (p.rir !== null && p.rir !== undefined) seria += ` @ RIR ${p.rir}`;
+    else if (p.rpe !== null && p.rpe !== undefined) seria += ` @ RPE ${p.rpe}`;
+  }
+  lines.push(seria);
+  lines.push(p.method === 'rpe' ? 'Metoda: tabela RPE' : 'Metoda: Epley');
+  if (p.session) lines.push(`Sesja: ${p.session}`);
+  if (p.note) lines.push(`Uwaga: ${p.note}`);
+  return lines;
+}
+
 function renderHistory2() {
   if (typeof Chart === 'undefined') return;   // biblioteka jeszcze nie gotowa
-  drawH2Chart('squat',    competitionPoints('squat'),    'Przysiad — 1RM (kg)');
-  drawH2Chart('bench',    competitionPoints('bench'),    'Wyciskanie — 1RM (kg)');
-  drawH2Chart('deadlift', competitionPoints('deadlift'), 'Martwy ciąg — 1RM (kg)');
-  drawH2Chart('total',    totalPoints(),                 'Total — suma rekordów (kg)');
+  drawH2Chart('squat',    competitionPoints('squat', h2WithRPE),    'Przysiad — 1RM (kg)');
+  drawH2Chart('bench',    competitionPoints('bench', h2WithRPE),    'Wyciskanie — 1RM (kg)');
+  drawH2Chart('deadlift', competitionPoints('deadlift', h2WithRPE), 'Martwy ciąg — 1RM (kg)');
+  drawH2Chart('total',    totalPoints(h2WithRPE),                   'Total — suma rekordów (kg)');
 }
 </script>
 
