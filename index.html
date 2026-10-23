@@ -225,6 +225,61 @@
     .charts-grid { grid-template-columns: 1fr; }
   }
 
+  /* ===== REKORDY NA POWTÓRZENIA ===== */
+  .records-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+  }
+  .records-grid .card { margin-bottom: 0; padding: 0; overflow: hidden; }
+
+  .rec-head {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+  .rec-head.squat { color: #ff8fa3; }
+  .rec-head.bench { color: var(--blue); }
+  .rec-head.deadlift { color: var(--gold); }
+
+  .rec-body { display: flex; flex-direction: column; }
+
+  .rec-row {
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    align-items: baseline;
+    gap: 10px;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .rec-row:last-child { border-bottom: none; }
+  .rec-row.empty { opacity: 0.4; }
+
+  .rec-reps {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+  }
+  .rec-reps small { font-size: 0.6rem; letter-spacing: 1px; }
+
+  .rec-wt {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    color: var(--text);
+    letter-spacing: 1px;
+  }
+  .rec-wt .u { font-size: 0.7rem; color: var(--text-dim); margin-left: 3px; }
+
+  .rec-date { font-size: 0.68rem; color: var(--text-dim); white-space: nowrap; }
+
+  @media (max-width: 760px) {
+    .records-grid { grid-template-columns: 1fr; }
+  }
+
   .hist-form {
     display: grid;
     grid-template-columns: 1.3fr 1fr 0.8fr 0.8fr;
@@ -1294,6 +1349,23 @@
           </div>
         </div>
       </div>
+
+      <div class="section-divider"><span>REKORDY NA POWTÓRZENIA (COMPETITION)</span></div>
+
+      <div class="records-grid">
+        <div class="card record-col">
+          <div class="rec-head squat">🦵 PRZYSIAD</div>
+          <div class="rec-body" id="rec-squat"></div>
+        </div>
+        <div class="card record-col">
+          <div class="rec-head bench">🏋️ WYCISKANIE</div>
+          <div class="rec-body" id="rec-bench"></div>
+        </div>
+        <div class="card record-col">
+          <div class="rec-head deadlift">🪝 MARTWY CIĄG</div>
+          <div class="rec-body" id="rec-deadlift"></div>
+        </div>
+      </div>
     </div><!-- /tab-history2 -->
 
     <!-- ===================== ZAKŁADKA: BAZA TRENINGÓW ===================== -->
@@ -2300,12 +2372,52 @@ function h2TooltipLines(key, idx) {
   return lines;
 }
 
+// Rekord na daną liczbę powtórzeń: najcięższa seria Competition z reps === N.
+// Zwraca { weight, date } lub null. Przy remisie bierze najwcześniejszą datę.
+function repRecord(lift, reps) {
+  const cands = dataSets.filter(r =>
+    r.variant === 'Competition' && r.lift === lift &&
+    r.reps === reps && r.weight_kg > 0);
+  if (!cands.length) return null;
+  let best = cands[0];
+  for (const r of cands) {
+    if (r.weight_kg > best.weight_kg ||
+       (r.weight_kg === best.weight_kg && r.date < best.date)) best = r;
+  }
+  return { weight: best.weight_kg, date: best.date };
+}
+
+const REP_RANGE = [1, 2, 3, 4, 5, 6, 7, 8];
+
+function renderRecords() {
+  ['squat', 'bench', 'deadlift'].forEach(lift => {
+    const body = document.getElementById('rec-' + lift);
+    if (!body) return;
+    body.innerHTML = REP_RANGE.map(n => {
+      const rec = repRecord(lift, n);
+      if (rec) {
+        return `<div class="rec-row">
+          <span class="rec-reps">${n}<small>RM</small></span>
+          <span class="rec-wt">${rec.weight}<span class="u">kg</span></span>
+          <span class="rec-date">${fmtDate(rec.date)}</span>
+        </div>`;
+      }
+      return `<div class="rec-row empty">
+        <span class="rec-reps">${n}<small>RM</small></span>
+        <span class="rec-wt">—</span>
+        <span class="rec-date"></span>
+      </div>`;
+    }).join('');
+  });
+}
+
 function renderHistory2() {
   if (typeof Chart === 'undefined') return;   // biblioteka jeszcze nie gotowa
   drawH2Chart('squat',    competitionPoints('squat', h2WithRPE),    'Przysiad — 1RM (kg)');
   drawH2Chart('bench',    competitionPoints('bench', h2WithRPE),    'Wyciskanie — 1RM (kg)');
   drawH2Chart('deadlift', competitionPoints('deadlift', h2WithRPE), 'Martwy ciąg — 1RM (kg)');
   drawH2Chart('total',    totalPoints(h2WithRPE),                   'Total — suma rekordów (kg)');
+  renderRecords();
 }
 </script>
 
