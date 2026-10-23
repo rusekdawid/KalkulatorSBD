@@ -326,26 +326,6 @@
     "knee": "SBD"
   },
   {
-    "id": "ig-Dd4lzMbkRCw-2",
-    "date": "2026-09-28",
-    "post_date": "2026-09-29",
-    "session": "T2 Primary",
-    "lift": "squat",
-    "variant": "Competition",
-    "weight_kg": 200,
-    "reps": 3,
-    "sets": 1,
-    "rir": null,
-    "rpe": null,
-    "effort_raw": null,
-    "note": "Back-off",
-    "plan_block": null,
-    "plan_week": null,
-    "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/Dd4lzMbkRCw/",
-    "knee": "SBD"
-  },
-  {
     "id": "ig-Dd4lzMbkRCw-3",
     "date": "2026-09-28",
     "post_date": "2026-09-29",
@@ -547,8 +527,8 @@
     "weight_kg": 217.5,
     "reps": 3,
     "sets": 1,
-    "rir": null,
-    "rpe": null,
+    "rir": 2,
+    "rpe": 8,
     "effort_raw": null,
     "note": null,
     "plan_block": null,
@@ -1017,26 +997,6 @@
     "post_url": "https://www.instagram.com/rusek.powerlifting/p/DcKBz7lCPAb/"
   },
   {
-    "id": "ig-DcCd5T3CEYM-1",
-    "date": "2026-08-14",
-    "post_date": "2026-08-14",
-    "session": "Secondary",
-    "lift": "squat",
-    "variant": "Competition",
-    "weight_kg": 150,
-    "reps": 3,
-    "sets": 1,
-    "rir": null,
-    "rpe": null,
-    "effort_raw": null,
-    "note": null,
-    "plan_block": null,
-    "plan_week": null,
-    "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DcCd5T3CEYM/",
-    "knee": "SBD"
-  },
-  {
     "id": "ig-DcCd5T3CEYM-2",
     "date": "2026-08-14",
     "post_date": "2026-08-14",
@@ -1466,7 +1426,7 @@
     "session": null,
     "lift": "squat",
     "variant": "Competition",
-    "knee": null,
+    "knee": "Twardy",
     "weight_kg": 275,
     "reps": 1,
     "rir": 1,
@@ -1496,7 +1456,7 @@
     "plan_week": null,
     "source": "instagram",
     "post_url": "https://www.instagram.com/rusek.powerlifting/p/DYDBAsSiOP4/",
-    "knee": null
+    "knee": "Twardy"
   },
   {
     "id": "ig-DYDBAsSiOP4-2",
@@ -1553,7 +1513,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DXwOrGiiB6K/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DXwOrGiiB6K/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-DXwOrGiiB6K-2",
@@ -1610,7 +1571,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DXwN35xCAIt/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DXwN35xCAIt/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-DXwN35xCAIt-2",
@@ -1629,7 +1591,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DXwN35xCAIt/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DXwN35xCAIt/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-DXwN35xCAIt-3",
@@ -1648,7 +1611,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DXwN35xCAIt/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DXwN35xCAIt/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-DXwN35xCAIt-4",
@@ -1705,7 +1669,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DXFu0L1CJqW/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DXFu0L1CJqW/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-DXFu0L1CJqW-2",
@@ -1762,7 +1727,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DWjSsX3CPS_/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DWjSsX3CPS_/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-DWjSsX3CPS_-1",
@@ -1781,7 +1747,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DWjSsX3CPS_/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DWjSsX3CPS_/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-DWjSsX3CPS_-3",
@@ -1800,7 +1767,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DWjSsX3CPS_/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DWjSsX3CPS_/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-DWjSsX3CPS_-4",
@@ -1914,7 +1882,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DWZt85BiKbU/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DWZt85BiKbU/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-DWZt85BiKbU-2",
@@ -1927,13 +1896,14 @@
     "reps": 3,
     "sets": 1,
     "rir": 3,
-    "rpe": null,
+    "rpe": 7,
     "effort_raw": "RIR 3",
     "note": null,
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DWZt85BiKbU/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DWZt85BiKbU/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-DWZt85BiKbU-3",
@@ -2028,26 +1998,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DV9wLq_iCzE/"
-  },
-  {
-    "id": "ig-DV9wLq_iCzE-2",
-    "date": "2026-03-16",
-    "post_date": "2026-03-16",
-    "session": "T4 Primary",
-    "lift": "squat",
-    "variant": "Competition",
-    "weight_kg": 210,
-    "reps": 3,
-    "sets": 1,
-    "rir": 5,
-    "rpe": null,
-    "effort_raw": "RIR 5",
-    "note": "Back-off",
-    "plan_block": null,
-    "plan_week": null,
-    "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DV9wLq_iCzE/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DV9wLq_iCzE/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-DV9wLq_iCzE-3",
@@ -2145,63 +2097,6 @@
     "post_url": "https://www.instagram.com/rusek.powerlifting/p/DVzPxTuCLlo/"
   },
   {
-    "id": "ig-DVs9eiyiHkY-2",
-    "date": "2026-03-10",
-    "post_date": "2026-03-10",
-    "session": "T3",
-    "lift": "squat",
-    "variant": "Competition",
-    "weight_kg": 220,
-    "reps": 2,
-    "sets": 1,
-    "rir": 4,
-    "rpe": 6,
-    "effort_raw": "RIR 4",
-    "note": null,
-    "plan_block": null,
-    "plan_week": null,
-    "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DVs9eiyiHkY/"
-  },
-  {
-    "id": "ig-DVs9eiyiHkY-1",
-    "date": "2026-03-09",
-    "post_date": "2026-03-10",
-    "session": "T3",
-    "lift": "squat",
-    "variant": "Competition",
-    "weight_kg": 210,
-    "reps": 1,
-    "sets": 1,
-    "rir": null,
-    "rpe": null,
-    "effort_raw": null,
-    "note": "Rozgrzewka (LWU)",
-    "plan_block": null,
-    "plan_week": null,
-    "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DVs9eiyiHkY/"
-  },
-  {
-    "id": "ig-DVs9eiyiHkY-3",
-    "date": "2026-03-09",
-    "post_date": "2026-03-10",
-    "session": "T3",
-    "lift": "squat",
-    "variant": "Competition",
-    "weight_kg": 205,
-    "reps": 3,
-    "sets": 2,
-    "rir": null,
-    "rpe": null,
-    "effort_raw": null,
-    "note": null,
-    "plan_block": null,
-    "plan_week": null,
-    "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DVs9eiyiHkY/"
-  },
-  {
     "id": "ig-DVs9eiyiHkY-4",
     "date": "2026-03-09",
     "post_date": "2026-03-10",
@@ -2265,17 +2160,18 @@
     "session": "T2 Primary",
     "lift": "squat",
     "variant": "Competition",
-    "weight_kg": 210,
+    "weight_kg": 220,
     "reps": 2,
     "sets": 1,
-    "rir": 3,
-    "rpe": 7,
+    "rir": 4,
+    "rpe": 6,
     "effort_raw": null,
     "note": "Zapis S/B/D; w opisie data 03.03",
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DVZ6ODNiBhS/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DVZ6ODNiBhS/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-DVZ6ODNiBhS-2",
@@ -2446,26 +2342,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DVHhs5giG4S/"
-  },
-  {
-    "id": "ig-DVHhs5giG4S-2",
-    "date": "2026-02-23",
-    "post_date": "2026-02-23",
-    "session": "T1 Primary",
-    "lift": "squat",
-    "variant": "Competition",
-    "weight_kg": 195,
-    "reps": 3,
-    "sets": 1,
-    "rir": null,
-    "rpe": null,
-    "effort_raw": null,
-    "note": null,
-    "plan_block": null,
-    "plan_week": null,
-    "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DVHhs5giG4S/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DVHhs5giG4S/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-DVHhs5giG4S-3",
@@ -2560,7 +2438,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DTd4R61CMu6/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DTd4R61CMu6/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-DTd4R61CMu6-2",
@@ -2607,7 +2486,7 @@
     "session": null,
     "lift": "squat",
     "variant": "Competition",
-    "knee": null,
+    "knee": "Twardy",
     "weight_kg": 160,
     "reps": 3,
     "rir": 0,
@@ -2626,7 +2505,7 @@
     "session": null,
     "lift": "squat",
     "variant": "Competition",
-    "knee": null,
+    "knee": "Gołe kolano",
     "weight_kg": 95,
     "reps": 3,
     "rir": 0,
@@ -2683,7 +2562,7 @@
     "session": null,
     "lift": "squat",
     "variant": "Competition",
-    "knee": null,
+    "knee": "Twardy",
     "weight_kg": 260,
     "reps": 1,
     "rir": 0,
@@ -2712,7 +2591,8 @@
     "plan_block": "Plan 7",
     "plan_week": "Tydz 8",
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DJKqtyYoFXr/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DJKqtyYoFXr/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-DJKqtyYoFXr-2",
@@ -2769,7 +2649,8 @@
     "plan_block": "Plan 7",
     "plan_week": "Tydz 7",
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DI87u24oj74/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DI87u24oj74/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-DI87u24oj74-2",
@@ -2835,7 +2716,7 @@
     "session": null,
     "lift": "squat",
     "variant": "Competition",
-    "knee": null,
+    "knee": "Twardy",
     "weight_kg": 250,
     "reps": 1,
     "rir": 0,
@@ -2855,16 +2736,17 @@
     "lift": "squat",
     "variant": "Competition",
     "weight_kg": 210,
-    "reps": null,
+    "reps": 1,
     "sets": 1,
-    "rir": null,
-    "rpe": null,
+    "rir": 1,
+    "rpe": 9,
     "effort_raw": null,
     "note": "Zapis S/B/D; bez opasek",
     "plan_block": "Plan 7",
     "plan_week": "Tydz 6",
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DImkYKeIpoQ/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DImkYKeIpoQ/",
+    "knee": "Gołe kolano"
   },
   {
     "id": "ig-DImkYKeIpoQ-2",
@@ -2921,7 +2803,8 @@
     "plan_block": "Plan 7",
     "plan_week": "Tydz 5",
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DIWtMSeIMWn/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DIWtMSeIMWn/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-DIWtMSeIMWn-2",
@@ -2978,7 +2861,8 @@
     "plan_block": "Plan 7",
     "plan_week": "Tydz 3",
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DH3kI36oqIh/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DH3kI36oqIh/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-DH3kI36oqIh-2",
@@ -3035,7 +2919,8 @@
     "plan_block": "Plan 7",
     "plan_week": "Tydz 2",
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DHjoUCyoXTt/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DHjoUCyoXTt/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-DHjoUCyoXTt-2",
@@ -3092,7 +2977,8 @@
     "plan_block": "Plan 6",
     "plan_week": "Tydz 4",
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DGJRuYyIwiU/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DGJRuYyIwiU/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-DGJRuYyIwiU-2",
@@ -3149,7 +3035,8 @@
     "plan_block": "Plan 4",
     "plan_week": "Tydz 8",
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DDArwRiOwhp/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DDArwRiOwhp/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-DDArwRiOwhp-2",
@@ -3206,7 +3093,8 @@
     "plan_block": "Plan 4",
     "plan_week": "Tydz 4",
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DB190PVOUsf/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DB190PVOUsf/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-DBmhXpHu8_n-1",
@@ -3225,7 +3113,8 @@
     "plan_block": "Plan 4",
     "plan_week": "Tydz 3",
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DBmhXpHu8_n/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DBmhXpHu8_n/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-DBmhXpHu8_n-2",
@@ -3253,7 +3142,7 @@
     "session": null,
     "lift": "squat",
     "variant": "Competition",
-    "knee": null,
+    "knee": "Twardy",
     "weight_kg": 225,
     "reps": 3,
     "rir": 1,
@@ -3282,7 +3171,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DAt17bsurJV/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/DAt17bsurJV/",
+    "knee": "SBD"
   },
   {
     "id": "ig-DAt17bsurJV-2",
@@ -3339,7 +3229,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/C_1BrqxOe0y/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/C_1BrqxOe0y/",
+    "knee": "Taśma"
   },
   {
     "id": "ig-C_1BrqxOe0y-2",
@@ -3396,7 +3287,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/C-_Dv_jITkD/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/C-_Dv_jITkD/",
+    "knee": "SBD"
   },
   {
     "id": "ig-C-_Dv_jITkD-2",
@@ -3408,14 +3300,15 @@
     "weight_kg": 215,
     "reps": 3,
     "sets": 1,
-    "rir": null,
+    "rir": 0.5,
     "rpe": 9.5,
     "effort_raw": "RPE 9.5",
     "note": null,
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/C-_Dv_jITkD/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/C-_Dv_jITkD/",
+    "knee": "SBD"
   },
   {
     "id": "ig-C-_Dv_jITkD-3",
@@ -3529,7 +3422,8 @@
     "plan_block": null,
     "plan_week": null,
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/C-vcUknIc96/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/C-vcUknIc96/",
+    "knee": "SBD"
   },
   {
     "id": "ig-C-vcUknIc96-2",
@@ -3633,7 +3527,7 @@
     "session": null,
     "lift": "squat",
     "variant": "Competition",
-    "knee": null,
+    "knee": "SBD",
     "weight_kg": 175,
     "reps": 5,
     "rir": 2,
@@ -3652,7 +3546,7 @@
     "session": null,
     "lift": "squat",
     "variant": "Competition",
-    "knee": null,
+    "knee": "Taśma",
     "weight_kg": 200,
     "reps": 3,
     "rir": 1,
@@ -3795,7 +3689,8 @@
     "plan_block": "Plan 3",
     "plan_week": "Tydz 3",
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/C9S5jNxoCMT/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/C9S5jNxoCMT/",
+    "knee": "SBD"
   },
   {
     "id": "ig-C9S5jNxoCMT-2",
@@ -3975,7 +3870,7 @@
     "session": null,
     "lift": "squat",
     "variant": "Competition",
-    "knee": null,
+    "knee": "Twardy",
     "weight_kg": 235,
     "reps": 1,
     "rir": 2,
@@ -4004,7 +3899,8 @@
     "plan_block": "AMPY – PEAK",
     "plan_week": "Tydz 6",
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/C6UTG7LrRQB/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/C6UTG7LrRQB/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-C6UTG7LrRQB-2",
@@ -4061,7 +3957,8 @@
     "plan_block": "AMPY – PEAK",
     "plan_week": "Tydz 5",
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/C6EZTxAoFc-/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/C6EZTxAoFc-/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-C6EZTxAoFc--2",
@@ -4118,7 +4015,8 @@
     "plan_block": "AMPY – PEAK",
     "plan_week": "Tydz 3",
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/C5cKpqcIeZm/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/C5cKpqcIeZm/",
+    "knee": "Twardy"
   },
   {
     "id": "ig-C5cKpqcIeZm-2",
@@ -4165,7 +4063,7 @@
     "session": null,
     "lift": "squat",
     "variant": "Competition",
-    "knee": null,
+    "knee": "Twardy",
     "weight_kg": 217.5,
     "reps": 2,
     "rir": 1,
@@ -4194,7 +4092,8 @@
     "plan_block": "AMPY",
     "plan_week": "Tydz 5",
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/C4TilNxIi65/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/C4TilNxIi65/",
+    "knee": "SBD"
   },
   {
     "id": "ig-C4TilNxIi65-2",
@@ -4298,7 +4197,7 @@
     "session": null,
     "lift": "squat",
     "variant": "Competition",
-    "knee": null,
+    "knee": "SBD",
     "weight_kg": 235,
     "reps": 1,
     "rir": 0,
@@ -4309,25 +4208,6 @@
     "plan_week": null,
     "source": "manual",
     "post_url": null
-  },
-  {
-    "id": "ig-C0w1AFBo4Iq-1",
-    "date": "2023-12-12",
-    "post_date": "2023-12-12",
-    "session": "Ostatnie siady przed zawodami",
-    "lift": "squat",
-    "variant": "Competition",
-    "weight_kg": 220,
-    "reps": null,
-    "sets": 1,
-    "rir": null,
-    "rpe": null,
-    "effort_raw": null,
-    "note": null,
-    "plan_block": "Peak",
-    "plan_week": "Tydz 6",
-    "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/C0w1AFBo4Iq/"
   },
   {
     "id": "ig-C0w1AFBo4Iq-2",
@@ -4346,7 +4226,8 @@
     "plan_block": "Peak",
     "plan_week": "Tydz 6",
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/C0w1AFBo4Iq/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/C0w1AFBo4Iq/",
+    "knee": "SBD"
   },
   {
     "id": "ig-C0XWTUZrtF4-1",
@@ -4365,7 +4246,8 @@
     "plan_block": "Peak",
     "plan_week": "Tydz 5",
     "source": "instagram",
-    "post_url": "https://www.instagram.com/rusek.powerlifting/p/C0XWTUZrtF4/"
+    "post_url": "https://www.instagram.com/rusek.powerlifting/p/C0XWTUZrtF4/",
+    "knee": "SBD"
   },
   {
     "id": "ig-C0XWTUZrtF4-2",
