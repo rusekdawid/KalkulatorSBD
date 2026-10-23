@@ -276,6 +276,17 @@
 
   .rec-date { font-size: 0.68rem; color: var(--text-dim); white-space: nowrap; }
 
+  .rec-row { cursor: pointer; transition: background 0.15s; }
+  .rec-row:hover { background: rgba(255,255,255,0.03); }
+  .rec-row.manual .rec-wt { color: var(--gold); }
+  .rec-hint { text-align: center; font-size: 0.75rem; color: var(--text-dim); margin: -20px 0 20px; }
+  .rec-knee {
+    display: flex; flex-wrap: wrap; gap: 6px; justify-content: center;
+    padding: 10px 12px; border-bottom: 1px solid var(--border);
+  }
+  .rec-knee .et-btn { padding: 6px 10px; font-size: 0.72rem; }
+  .rec-ed-auto { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 16px; }
+
   @media (max-width: 760px) {
     .records-grid { grid-template-columns: 1fr; }
   }
@@ -1355,10 +1366,12 @@
       </div>
 
       <div class="section-divider"><span>REKORDY NA POWTÓRZENIA (COMPETITION)</span></div>
+      <p class="rec-hint">Kliknij wiersz, aby wpisać rekord ręcznie. ✍ = rekord wpisany ręcznie.</p>
 
       <div class="records-grid">
         <div class="card record-col">
           <div class="rec-head squat">🦵 PRZYSIAD</div>
+          <div class="rec-knee" id="rec-knee-toggle"></div>
           <div class="rec-body" id="rec-squat"></div>
         </div>
         <div class="card record-col">
@@ -1371,6 +1384,34 @@
         </div>
       </div>
     </div><!-- /tab-history2 -->
+
+    <!-- EDYTOR RĘCZNEGO REKORDU -->
+    <div class="modal-overlay" id="rec-overlay" onclick="if(event.target===this)closeRecEditor()">
+      <div class="modal" style="max-width: 420px;">
+        <div class="modal-head">
+          <span id="rec-ed-title">Rekord</span>
+          <button class="icon-btn" onclick="closeRecEditor()">✕</button>
+        </div>
+        <div class="modal-body">
+          <p class="rec-ed-auto" id="rec-ed-auto"></p>
+          <div class="editor-grid">
+            <div class="input-group">
+              <label>Ciężar (kg)</label>
+              <input type="number" id="rec-ed-weight" min="0" step="0.5">
+            </div>
+            <div class="input-group">
+              <label>Data (opcjonalnie)</label>
+              <input type="date" id="rec-ed-date" min="2015-01-01" max="2030-12-31">
+            </div>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button class="btn-ghost" id="rec-ed-delete" onclick="deleteRecManual()">Usuń ręczny</button>
+          <button class="btn-ghost" onclick="closeRecEditor()">Anuluj</button>
+          <button class="btn-primary" onclick="saveRecEditor()">Zapisz</button>
+        </div>
+      </div>
+    </div>
 
     <!-- ===================== ZAKŁADKA: BAZA TRENINGÓW ===================== -->
     <div class="tab-panel" id="tab-data">
@@ -2005,6 +2046,7 @@ async function initDataTab() {
   } else {
     await fetchSetsFromRepo();
   }
+  loadManualRecords();
 
   // sortowanie po kliknięciu nagłówka
   document.querySelectorAll('#data-table thead th[data-sort]').forEach(th => {
@@ -2026,9 +2068,9 @@ async function fetchSetsFromRepo() {
   empty.style.display = 'block';
   empty.textContent = 'Wczytywanie danych…';
   try {
-    const resp = await fetch('data/sets.json', { cache: 'no-store' });
-    if (!resp.ok) throw new Error('HTTP ' + resp.status);
-    dataSets = normalizeSets(await resp.json());
+    const data = await fetchRepoJson('data/sets.json');
+    if (!data) throw new Error('brak pliku');
+    dataSets = normalizeSets(data);
     saveSets(false);
     renderData();
   } catch (e) {
@@ -2057,6 +2099,26 @@ function reloadFromRepo() {
   localStorage.removeItem(SETS_KEY);
   setSetsDirty(false);
   fetchSetsFromRepo();
+  loadManualRecords();
+}
+
+// Plik JSON z repo prosto przez API GitHuba (bez ~10-min cache GitHub Pages,
+// więc po zapisie od razu widać aktualną wersję). Zapasowo: plik z Pages.
+// Zwraca null, gdy pliku nie ma.
+async function fetchRepoJson(path) {
+  const headers = { 'Accept': 'application/vnd.github.raw+json' };
+  const token = localStorage.getItem(GH_TOKEN_KEY);
+  if (token) headers['Authorization'] = 'Bearer ' + token;
+  try {
+    const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${path}?ref=${GH_BRANCH}`,
+                          { headers, cache: 'no-store' });
+    if (r.ok) return await r.json();
+    if (r.status === 404) return null;
+  } catch (e) { /* zapasowo z Pages */ }
+  const r = await fetch(path, { cache: 'no-store' });
+  if (r.status === 404) return null;
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
 }
 
 // ---------- Zapis do repo przez GitHub REST API ----------
@@ -2123,6 +2185,9 @@ async function saveToRepo() {
     await ghPutFile(token, 'data/history_v1.json',
       JSON.stringify(history, null, 2) + '\n',
       'Historia 1.0: zapis ze strony');
+    await ghPutFile(token, 'data/records_manual.json',
+      JSON.stringify(manualRecords, null, 2) + '\n',
+      'Rekordy reczne: zapis ze strony');
     localStorage.removeItem(SETS_DIRTY_KEY);
     alert('Zapisano do repozytorium ✅\nNowa wersja pojawi się na stronie po ok. 1 minucie.');
   } catch (e) {
@@ -2565,11 +2630,13 @@ function h2TooltipLines(key, idx) {
 }
 
 // Rekord na daną liczbę powtórzeń: najcięższa seria Competition z reps === N.
+// Przysiad liczony osobno dla każdego typu kolan (serie bez kolan pomijane).
 // Zwraca { weight, date } lub null. Przy remisie bierze najwcześniejszą datę.
-function repRecord(lift, reps) {
+function repRecord(lift, reps, knee) {
   const cands = dataSets.filter(r =>
     r.variant === 'Competition' && r.lift === lift &&
-    r.reps === reps && r.weight_kg > 0);
+    r.reps === reps && r.weight_kg > 0 &&
+    (lift !== 'squat' || r.knee === knee));
   if (!cands.length) return null;
   let best = cands[0];
   for (const r of cands) {
@@ -2581,20 +2648,103 @@ function repRecord(lift, reps) {
 
 const REP_RANGE = [1, 2, 3, 4, 5, 6, 7, 8];
 
+// ---------- Rekordy ręczne ----------
+// { 'squat:SBD': { '3': { weight, date } }, 'bench': {...}, 'deadlift': {...} }
+const REC_KNEES = ['SBD', 'Twardy', 'Gołe kolano', 'Taśma'];
+const REC_MANUAL_KEY = 'kalkSBD_records_manual';
+let recKnee = 'SBD';
+let manualRecords = {};
+let recEditing = null;   // { key, reps, lift }
+
+function recKey(lift) { return lift === 'squat' ? 'squat:' + recKnee : lift; }
+
+async function loadManualRecords() {
+  const stored = localStorage.getItem(REC_MANUAL_KEY);
+  if (stored && localStorage.getItem(SETS_DIRTY_KEY)) {
+    try { manualRecords = JSON.parse(stored) || {}; } catch (e) { manualRecords = {}; }
+  } else {
+    try { manualRecords = (await fetchRepoJson('data/records_manual.json')) || {}; }
+    catch (e) { manualRecords = stored ? JSON.parse(stored) : {}; }
+    localStorage.setItem(REC_MANUAL_KEY, JSON.stringify(manualRecords));
+  }
+  renderRecords();
+}
+
+function setRecKnee(k) { recKnee = k; renderRecords(); }
+
+function openRecEditor(lift, reps) {
+  const key = recKey(lift);
+  const man = (manualRecords[key] || {})[reps];
+  const auto = repRecord(lift, reps, recKnee);
+  recEditing = { key, reps, lift };
+  const liftName = { squat: 'Przysiad', bench: 'Wyciskanie', deadlift: 'Martwy ciąg' }[lift];
+  document.getElementById('rec-ed-title').textContent =
+    `${liftName}${lift === 'squat' ? ' (' + recKnee + ')' : ''} — ${reps}RM`;
+  document.getElementById('rec-ed-auto').textContent = auto
+    ? `Z bazy treningów: ${auto.weight} kg (${fmtDate(auto.date)}). Pokazywany jest cięższy z dwóch.`
+    : 'Brak takiej serii w bazie treningów.';
+  document.getElementById('rec-ed-weight').value = man ? man.weight : '';
+  document.getElementById('rec-ed-date').value = man && man.date ? man.date : '';
+  document.getElementById('rec-ed-delete').style.display = man ? '' : 'none';
+  document.getElementById('rec-overlay').classList.add('open');
+}
+
+function closeRecEditor() {
+  document.getElementById('rec-overlay').classList.remove('open');
+  recEditing = null;
+}
+
+function persistManualRecords() {
+  localStorage.setItem(REC_MANUAL_KEY, JSON.stringify(manualRecords));
+  setSetsDirty(true);
+  renderRecords();
+}
+
+function saveRecEditor() {
+  const w = parseFloat(document.getElementById('rec-ed-weight').value);
+  if (!(w > 0)) { alert('Podaj ciężar.'); return; }
+  const date = document.getElementById('rec-ed-date').value || null;
+  const { key, reps } = recEditing;
+  manualRecords[key] = manualRecords[key] || {};
+  manualRecords[key][reps] = { weight: w, date };
+  closeRecEditor();
+  persistManualRecords();
+}
+
+function deleteRecManual() {
+  const { key, reps } = recEditing;
+  if (manualRecords[key]) {
+    delete manualRecords[key][reps];
+    if (!Object.keys(manualRecords[key]).length) delete manualRecords[key];
+  }
+  closeRecEditor();
+  persistManualRecords();
+}
+
 function renderRecords() {
+  const tog = document.getElementById('rec-knee-toggle');
+  if (tog) tog.innerHTML = REC_KNEES.map(k =>
+    `<button class="et-btn${k === recKnee ? ' active' : ''}" onclick="setRecKnee('${k}')">${k}</button>`).join('');
+
   ['squat', 'bench', 'deadlift'].forEach(lift => {
     const body = document.getElementById('rec-' + lift);
     if (!body) return;
+    const man = manualRecords[recKey(lift)] || {};
     body.innerHTML = REP_RANGE.map(n => {
-      const rec = repRecord(lift, n);
+      const auto = repRecord(lift, n, recKnee);
+      const m = man[n];
+      // pokazujemy cięższy z: rekord z bazy / rekord wpisany ręcznie
+      const useMan = m && (!auto || m.weight > auto.weight);
+      const rec = useMan ? m : auto;
+      const click = `onclick="openRecEditor('${lift}', ${n})"`;
       if (rec) {
-        return `<div class="rec-row">
+        return `<div class="rec-row${useMan ? ' manual' : ''}" ${click} title="Kliknij, aby edytować">
           <span class="rec-reps">${n}<small>RM</small></span>
-          <span class="rec-wt">${rec.weight}<span class="u">kg</span></span>
-          <span class="rec-date">${fmtDate(rec.date)}</span>
+          <span class="rec-wt">${rec.weight}<span class="u">kg</span>${useMan ? ' ✍' : ''}</span>
+          <span class="rec-date">${rec.date ? fmtDate(rec.date) : ''}</span>
         </div>`;
       }
-      return `<div class="rec-row empty">
+      return `<div class="rec-row empty" ${click} title="Kliknij, aby wpisać">
         <span class="rec-reps">${n}<small>RM</small></span>
         <span class="rec-wt">—</span>
         <span class="rec-date"></span>
