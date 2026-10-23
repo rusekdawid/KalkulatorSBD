@@ -1,0 +1,526 @@
+{
+  "sq": [
+    {
+      "id": "mvl4fzvee118",
+      "date": "2023-04-11",
+      "weight": 210,
+      "reps": 1,
+      "rir": 0,
+      "e1rm": 210
+    },
+    {
+      "id": "mvl4h8avy0q1",
+      "date": "2023-05-06",
+      "weight": 180,
+      "reps": 3,
+      "rir": 1,
+      "e1rm": 202.5
+    },
+    {
+      "id": "mvl4id9ilxh9",
+      "date": "2023-08-06",
+      "weight": 175,
+      "reps": 5,
+      "rir": 0,
+      "e1rm": 202.5
+    },
+    {
+      "id": "mvl4jd7you82",
+      "date": "2023-09-22",
+      "weight": 205,
+      "reps": 3,
+      "rir": 1,
+      "e1rm": 230
+    },
+    {
+      "id": "mvl4kjxj74k7",
+      "date": "2023-11-06",
+      "weight": 190,
+      "reps": 2,
+      "rir": 3,
+      "e1rm": 220
+    },
+    {
+      "id": "mvl4l7ieqm3v",
+      "date": "2023-11-11",
+      "weight": 200,
+      "reps": 2,
+      "rir": 1,
+      "e1rm": 217.5
+    },
+    {
+      "id": "mvl4lu8e0abj",
+      "date": "2023-11-20",
+      "weight": 210,
+      "reps": 2,
+      "rir": 0,
+      "e1rm": 220
+    },
+    {
+      "id": "mvl4nf9n97dy",
+      "date": "2023-11-25",
+      "weight": 220,
+      "reps": 1,
+      "rir": 1,
+      "e1rm": 230
+    },
+    {
+      "id": "mvl4o0d92s08",
+      "date": "2023-12-02",
+      "weight": 230,
+      "reps": 1,
+      "rir": 0.5,
+      "e1rm": 235
+    },
+    {
+      "id": "mvl4opk04cvw",
+      "date": "2023-12-12",
+      "weight": 240,
+      "reps": 1,
+      "rir": 0,
+      "e1rm": 240
+    },
+    {
+      "id": "mvl4pdp63dr5",
+      "date": "2023-12-17",
+      "weight": 235,
+      "reps": 1,
+      "rir": 0,
+      "e1rm": 235
+    },
+    {
+      "id": "mvl4qjs13awr",
+      "date": "2024-03-09",
+      "weight": 200,
+      "reps": 4,
+      "rir": 0,
+      "e1rm": 225
+    },
+    {
+      "id": "mvl4r9482krx",
+      "date": "2024-04-01",
+      "weight": 217.5,
+      "reps": 2,
+      "rir": 1,
+      "e1rm": 235
+    },
+    {
+      "id": "mvl4rur3elnu",
+      "date": "2024-04-07",
+      "weight": 225,
+      "reps": 2,
+      "rir": 1,
+      "e1rm": 245
+    },
+    {
+      "id": "mvl4t1kanevf",
+      "date": "2024-04-22",
+      "weight": 240,
+      "reps": 1,
+      "rir": 0.5,
+      "e1rm": 245
+    },
+    {
+      "id": "mvl4tlidxtdf",
+      "date": "2024-04-28",
+      "weight": 245,
+      "reps": 1,
+      "rir": 1,
+      "e1rm": 257.5
+    },
+    {
+      "id": "mvl4uhmbuqs9",
+      "date": "2024-05-05",
+      "weight": 235,
+      "reps": 1,
+      "rir": 2,
+      "e1rm": 255
+    },
+    {
+      "id": "mvl4v7bo1nqn",
+      "date": "2024-07-11",
+      "weight": 160,
+      "reps": 5,
+      "rir": 2,
+      "e1rm": 197.5
+    },
+    {
+      "id": "mvl4w9xfppmk",
+      "date": "2024-07-22",
+      "weight": 175,
+      "reps": 5,
+      "rir": 2,
+      "e1rm": 215
+    },
+    {
+      "id": "mvl4wvtrqk1y",
+      "date": "2024-07-22",
+      "weight": 200,
+      "reps": 3,
+      "rir": 1,
+      "e1rm": 225
+    },
+    {
+      "id": "mvl4x80z5ekz",
+      "date": "2024-08-16",
+      "weight": 210,
+      "reps": 3,
+      "rir": 1,
+      "e1rm": 235
+    },
+    {
+      "id": "mvl4xhli2vxf",
+      "date": "2024-08-22",
+      "weight": 195,
+      "reps": 3,
+      "rir": 3,
+      "e1rm": 232.5
+    },
+    {
+      "id": "mvl4xvdsw4wf",
+      "date": "2024-09-12",
+      "weight": 205,
+      "reps": 3,
+      "rir": 2,
+      "e1rm": 237.5
+    },
+    {
+      "id": "mvl514dq551a",
+      "date": "2024-10-04",
+      "weight": 212.5,
+      "reps": 3,
+      "rir": 1,
+      "e1rm": 237.5
+    },
+    {
+      "id": "mvl51v8998bk",
+      "date": "2024-10-12",
+      "weight": 225,
+      "reps": 3,
+      "rir": 1,
+      "e1rm": 252.5
+    },
+    {
+      "id": "mvl536xav00l",
+      "date": "2024-10-26",
+      "weight": 230,
+      "reps": 3,
+      "rir": 0,
+      "e1rm": 250
+    },
+    {
+      "id": "mvl53k2lyhd3",
+      "date": "2024-11-01",
+      "weight": 235,
+      "reps": 2,
+      "rir": 0.5,
+      "e1rm": 250
+    },
+    {
+      "id": "mvl53w3o2xk9",
+      "date": "2024-11-30",
+      "weight": 240,
+      "reps": 1,
+      "rir": 1,
+      "e1rm": 252.5
+    },
+    {
+      "id": "mvl54kfv6cdy",
+      "date": "2025-02-16",
+      "weight": 247.5,
+      "reps": 1,
+      "rir": 0,
+      "e1rm": 247.5
+    },
+    {
+      "id": "mvl558m61o35",
+      "date": "2025-03-23",
+      "weight": 235,
+      "reps": 2,
+      "rir": 1,
+      "e1rm": 255
+    },
+    {
+      "id": "mvl55ttjory8",
+      "date": "2025-03-31",
+      "weight": 245,
+      "reps": 2,
+      "rir": 1,
+      "e1rm": 265
+    },
+    {
+      "id": "mvl57xyml0xu",
+      "date": "2025-04-12",
+      "weight": 245,
+      "reps": 1,
+      "rir": 1,
+      "e1rm": 257.5
+    },
+    {
+      "id": "mvl59d5auv9a",
+      "date": "2025-04-27",
+      "weight": 250,
+      "reps": 1,
+      "rir": 0,
+      "e1rm": 250
+    },
+    {
+      "id": "mvl5bq34xt0v",
+      "date": "2025-05-02",
+      "weight": 245,
+      "reps": 1,
+      "rir": 1,
+      "e1rm": 257.5
+    },
+    {
+      "id": "mvl5c0yxvc7m",
+      "date": "2025-05-13",
+      "weight": 260,
+      "reps": 1,
+      "rir": 0,
+      "e1rm": 260
+    },
+    {
+      "id": "mvl5f12fsb3u",
+      "date": "2025-11-25",
+      "weight": 95,
+      "reps": 3,
+      "rir": 0,
+      "e1rm": 102.5
+    },
+    {
+      "id": "mvl5frh55tni",
+      "date": "2026-01-02",
+      "weight": 160,
+      "reps": 3,
+      "rir": 0,
+      "e1rm": 172.5
+    },
+    {
+      "id": "mvl5fzd7z7fq",
+      "date": "2026-01-13",
+      "weight": 185,
+      "reps": 3,
+      "rir": 0,
+      "e1rm": 200
+    },
+    {
+      "id": "mvl5gcjaxbm4",
+      "date": "2026-02-23",
+      "weight": 205,
+      "reps": 2,
+      "rir": 4,
+      "e1rm": 245
+    },
+    {
+      "id": "mvl5hi37xldd",
+      "date": "2026-03-03",
+      "weight": 210,
+      "reps": 2,
+      "rir": 3,
+      "e1rm": 242.5
+    },
+    {
+      "id": "mvl5hwl653ml",
+      "date": "2026-03-10",
+      "weight": 220,
+      "reps": 2,
+      "rir": 4,
+      "e1rm": 262.5
+    },
+    {
+      "id": "mvl5idf46uv6",
+      "date": "2026-03-17",
+      "weight": 227.5,
+      "reps": 2,
+      "rir": 3.5,
+      "e1rm": 267.5
+    },
+    {
+      "id": "mvl5inxawlyn",
+      "date": "2026-03-23",
+      "weight": 235,
+      "reps": 2,
+      "rir": 2,
+      "e1rm": 262.5
+    },
+    {
+      "id": "mvl5j1b3q7rl",
+      "date": "2026-03-31",
+      "weight": 246,
+      "reps": 2,
+      "rir": 1.5,
+      "e1rm": 270
+    },
+    {
+      "id": "mvl5jo6wvm5q",
+      "date": "2026-04-14",
+      "weight": 225,
+      "reps": 1,
+      "rir": 5,
+      "e1rm": 270
+    },
+    {
+      "id": "mvl5kcmnwxfw",
+      "date": "2026-04-20",
+      "weight": 238.5,
+      "reps": 1,
+      "rir": 3,
+      "e1rm": 267.5
+    },
+    {
+      "id": "mvl5kyz606iv",
+      "date": "2026-04-30",
+      "weight": 250,
+      "reps": 1,
+      "rir": 1,
+      "e1rm": 262.5
+    },
+    {
+      "id": "mvl5lr5rf9jf",
+      "date": "2026-05-07",
+      "weight": 261,
+      "reps": 1,
+      "rir": 2,
+      "e1rm": 282.5
+    },
+    {
+      "id": "mvl5m86yqigl",
+      "date": "2026-05-13",
+      "weight": 275,
+      "reps": 1,
+      "rir": 1,
+      "e1rm": 287.5
+    },
+    {
+      "id": "mvl5n2wrdazh",
+      "date": "2026-06-22",
+      "weight": 215,
+      "reps": 4,
+      "rir": 3,
+      "e1rm": 265
+    },
+    {
+      "id": "mvl5o56dod4l",
+      "date": "2026-06-24",
+      "weight": 220,
+      "reps": 4,
+      "rir": 1.5,
+      "e1rm": 260
+    },
+    {
+      "id": "mvl5ouwiqj94",
+      "date": "2026-07-05",
+      "weight": 230,
+      "reps": 4,
+      "rir": 0,
+      "e1rm": 257.5
+    },
+    {
+      "id": "mvl5pacwkq3z",
+      "date": "2026-07-27",
+      "weight": 210,
+      "reps": 3,
+      "rir": 6,
+      "e1rm": 275
+    },
+    {
+      "id": "mvl5py5p438i",
+      "date": "2026-08-01",
+      "weight": 225,
+      "reps": 3,
+      "rir": 2,
+      "e1rm": 260
+    },
+    {
+      "id": "mvl5q74k7z3m",
+      "date": "2026-08-10",
+      "weight": 230,
+      "reps": 3,
+      "rir": 2.5,
+      "e1rm": 270
+    },
+    {
+      "id": "mvl5qpk613wv",
+      "date": "2026-08-10",
+      "weight": 208.5,
+      "reps": 3,
+      "rir": 5,
+      "e1rm": 265
+    },
+    {
+      "id": "mvl5rcm7bheg",
+      "date": "2026-08-17",
+      "weight": 210,
+      "reps": 3,
+      "rir": 3,
+      "e1rm": 250
+    },
+    {
+      "id": "mvl5rllfo2wh",
+      "date": "2026-08-26",
+      "weight": 225,
+      "reps": 3,
+      "rir": 3,
+      "e1rm": 270
+    },
+    {
+      "id": "mvl5rxtcc7kd",
+      "date": "2026-09-04",
+      "weight": 230,
+      "reps": 3,
+      "rir": 2,
+      "e1rm": 267.5
+    },
+    {
+      "id": "mvl5sg8s6op7",
+      "date": "2026-09-12",
+      "weight": 235,
+      "reps": 3,
+      "rir": 2,
+      "e1rm": 272.5
+    },
+    {
+      "id": "mvl5sruairrp",
+      "date": "2026-09-21",
+      "weight": 200,
+      "reps": 3,
+      "rir": 6,
+      "e1rm": 262.5
+    },
+    {
+      "id": "mvl5t29xerd0",
+      "date": "2026-09-29",
+      "weight": 207.5,
+      "reps": 3,
+      "rir": 6,
+      "e1rm": 272.5
+    },
+    {
+      "id": "mvl5tg12khhi",
+      "date": "2026-10-09",
+      "weight": 215,
+      "reps": 3,
+      "rir": 4,
+      "e1rm": 265
+    },
+    {
+      "id": "mvl5tudj9kkv",
+      "date": "2026-10-15",
+      "weight": 225,
+      "reps": 3,
+      "rir": 3,
+      "e1rm": 270
+    },
+    {
+      "id": "mvl5uq05nid6",
+      "date": "2026-10-22",
+      "weight": 232.5,
+      "reps": 3,
+      "rir": 2.5,
+      "e1rm": 272.5
+    }
+  ],
+  "bp": [],
+  "dl": []
+}
